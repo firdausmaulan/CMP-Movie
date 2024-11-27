@@ -15,6 +15,7 @@ Screen
 - Reusable LoadingScreen
 - Reusable EmptyScreen
 - Reusable ErrorScreen
+- Reusable StarRatingScreen
 
 <img src="https://raw.githubusercontent.com/firdausmaulan/CMP-Movie/refs/heads/master/screenshoot/list.jpeg" width="300">
 
