@@ -4,7 +4,7 @@ Tech Stack
 - MVVM architecture
 - Kotlin programming language
 - Jetpack Compose declarative UI
-- Ktor http client with okhttp
+- Ktor http client with okhttp and darwin
 - Koin dependency injection
 - Coil async image loader
 - Compose Navigation
