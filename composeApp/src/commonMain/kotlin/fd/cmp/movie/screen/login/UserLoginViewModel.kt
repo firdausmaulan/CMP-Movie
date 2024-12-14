@@ -1,20 +1,18 @@
 package fd.cmp.movie.screen.login
 
-import android.util.Patterns
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.fd.myblog.data.local.preference.AppPreference
-import com.fd.myblog.data.remote.api.core.Result
-import com.fd.myblog.data.remote.api.service.UserApiService
-import com.fd.myblog.data.remote.request.UserLoginRequest
+import fd.cmp.movie.data.remote.api.core.ApiResponse
+import fd.cmp.movie.data.remote.request.UserLoginRequest
+import fd.cmp.movie.data.repository.UserRepository
+import fd.cmp.movie.helper.TextHelper
 import kotlinx.coroutines.launch
 
 class UserLoginViewModel(
-    private val userApiService: UserApiService,
-    private val preference: AppPreference
+    private val repository: UserRepository
 ) : ViewModel() {
 
     var state by mutableStateOf<UserLoginState>(UserLoginState.Idle)
@@ -23,8 +21,14 @@ class UserLoginViewModel(
 
     var passwordError by mutableStateOf(false)
 
+    init {
+        if (repository.getToken().isNotEmpty()) {
+            state = UserLoginState.Success
+        }
+    }
+
     fun isValidEmail(email: String?): Boolean {
-        return Patterns.EMAIL_ADDRESS.matcher(email.toString()).matches()
+        return TextHelper.isValidEmailFormat(email)
     }
 
     fun isValidPassword(password: String?): Boolean {
@@ -32,26 +36,20 @@ class UserLoginViewModel(
     }
 
     private fun isValidRequest(request: UserLoginRequest): Boolean {
-        return request.email != null &&
-                request.password != null &&
-                isValidEmail(request.email) &&
-                request.password.length >= 8
+        if (request.email == null || request.password == null) return false
+        return isValidEmail(request.email) && request.password?.length!! >= 8
     }
 
     fun login(request: UserLoginRequest) {
         if (!isValidRequest(request)) return
         viewModelScope.launch {
             state = UserLoginState.Loading
-            val result = userApiService.login(request)
-            when (result) {
-                is Result.Success -> {
-                    state = UserLoginState.Success(result.data.user)
-                    preference.saveUser(result.data.user)
-                }
-
-                is Result.Error -> {
-                    state = UserLoginState.Error("Failed to login: ${result.error}")
-                }
+            val result = repository.login(request)
+            if (result is ApiResponse.Success) {
+                state = UserLoginState.Success
+                repository.saveToken(result.data.user?.token)
+            } else if (result is ApiResponse.Error) {
+                state = UserLoginState.Error(result.message)
             }
         }
     }

@@ -13,7 +13,6 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,23 +23,31 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import com.fd.myblog.R
-import com.fd.myblog.data.remote.request.UserLoginRequest
-import com.fd.myblog.helper.UiHelper
-import com.fd.myblog.ui.common.ErrorBottomSheetDialog
-import com.fd.myblog.ui.common.LoadingButton
+import cmp_movie.composeapp.generated.resources.Res
+import cmp_movie.composeapp.generated.resources.email
+import cmp_movie.composeapp.generated.resources.error_email
+import cmp_movie.composeapp.generated.resources.error_password
+import cmp_movie.composeapp.generated.resources.ic_visible
+import cmp_movie.composeapp.generated.resources.ic_visible_off
+import cmp_movie.composeapp.generated.resources.login
+import cmp_movie.composeapp.generated.resources.password
+import fd.cmp.movie.data.remote.request.UserLoginRequest
+import fd.cmp.movie.helper.UiHelper
+import fd.cmp.movie.screen.common.ErrorBottomSheetDialog
+import fd.cmp.movie.screen.common.LoadingButton
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun UserLoginScreen(
-    viewModel: UserLoginViewModel,
-    onLoginSuccess: () -> Unit,
-    onRegisterClick: () -> Unit
+    navigateToMovieList: () -> Unit
 ) {
 
+    val viewModel = koinViewModel<UserLoginViewModel>()
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var isPasswordVisible by remember { mutableStateOf(false) }
@@ -75,7 +82,7 @@ fun UserLoginScreen(
                         email = it
                         viewModel.emailError = !viewModel.isValidEmail(it)
                     },
-                    label = { Text("Email") },
+                    label = { Text(stringResource(Res.string.email)) },
                     isError = viewModel.emailError,
                     singleLine = true,
                     modifier = Modifier
@@ -85,7 +92,7 @@ fun UserLoginScreen(
                 )
                 if (viewModel.emailError) {
                     Text(
-                        text = "Invalid email format",
+                        text = stringResource(Res.string.error_email),
                         color = Color.Red,
                         style = MaterialTheme.typography.bodySmall,
                         modifier = Modifier
@@ -101,7 +108,7 @@ fun UserLoginScreen(
                         password = it
                         viewModel.passwordError = !viewModel.isValidPassword(it)
                     },
-                    label = { Text("Password") },
+                    label = { Text(stringResource(Res.string.password)) },
                     visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                     isError = viewModel.passwordError,
                     singleLine = true,
@@ -113,16 +120,16 @@ fun UserLoginScreen(
                         IconButton(onClick = { isPasswordVisible = !isPasswordVisible })
                         {
                             Icon(
-                                if (isPasswordVisible) painterResource(id = R.drawable.ic_visible)
-                                else painterResource(id = R.drawable.ic_visible_off),
-                                contentDescription = "Password visibility toggle"
+                                if (isPasswordVisible) painterResource(Res.drawable.ic_visible)
+                                else painterResource(Res.drawable.ic_visible_off),
+                                contentDescription = stringResource(Res.string.password)
                             )
                         }
                     }
                 )
                 if (viewModel.passwordError) {
                     Text(
-                        text = "Password must be at least 8 characters",
+                        text = stringResource(Res.string.error_password),
                         color = Color.Red,
                         style = MaterialTheme.typography.bodySmall,
                         modifier = Modifier
@@ -133,7 +140,21 @@ fun UserLoginScreen(
 
                 when (val state = viewModel.state) {
                     is UserLoginState.Idle -> {
-                        SubmitButton(viewModel, UserLoginRequest(email, password), onRegisterClick)
+                        val userLoginRequest = UserLoginRequest(email, password)
+                        Button(
+                            onClick = {
+                                viewModel.emailError =
+                                    !viewModel.isValidEmail(userLoginRequest.email)
+                                viewModel.passwordError =
+                                    !viewModel.isValidPassword(userLoginRequest.password)
+                                viewModel.login(userLoginRequest)
+                            },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(8.dp)
+                        ) {
+                            Text(stringResource(Res.string.login))
+                        }
                     }
 
                     is UserLoginState.Loading -> {
@@ -141,12 +162,12 @@ fun UserLoginScreen(
                     }
 
                     is UserLoginState.Success -> {
-                        onLoginSuccess()
+                        navigateToMovieList()
                     }
 
                     is UserLoginState.Error -> {
                         ErrorBottomSheetDialog(
-                            subMessage = state.message,
+                            subMessage = state.message.toString(),
                             onDismissRequest = {
                                 viewModel.state = UserLoginState.Idle
                             }
@@ -155,45 +176,6 @@ fun UserLoginScreen(
                 }
 
             }
-        }
-    }
-}
-
-@Composable
-fun SubmitButton(
-    viewModel: UserLoginViewModel,
-    userLoginRequest: UserLoginRequest,
-    onRegisterClick: () -> Unit
-) {
-    Column(modifier = Modifier.fillMaxWidth()) {
-        Button(
-            onClick = {
-                viewModel.emailError = !viewModel.isValidEmail(userLoginRequest.email)
-                viewModel.passwordError = !viewModel.isValidPassword(userLoginRequest.password)
-                viewModel.login(userLoginRequest)
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp)
-        ) {
-            Text("LOGIN")
-        }
-
-        Text(
-            "OR",
-            modifier = Modifier.align(Alignment.CenterHorizontally),
-            color = Color.Gray,
-            style = MaterialTheme.typography.bodySmall
-        )
-
-        OutlinedButton(
-            border = UiHelper.outlinedButtonBorderColors(),
-            onClick = { onRegisterClick() },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp)
-        ) {
-            Text("REGISTER")
         }
     }
 }

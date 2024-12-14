@@ -11,9 +11,11 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun LoadingButton() {
-    Box(modifier = Modifier
-        .fillMaxWidth()
-        .height(50.dp), contentAlignment = Alignment.Center) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(50.dp), contentAlignment = Alignment.Center
+    ) {
         CircularProgressIndicator()
     }
 }

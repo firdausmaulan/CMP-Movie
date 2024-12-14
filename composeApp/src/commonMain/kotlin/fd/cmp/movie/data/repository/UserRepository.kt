@@ -1,11 +1,11 @@
 package fd.cmp.movie.data.repository
 
-import fd.cmp.movie.data.model.Movie
 import fd.cmp.movie.data.remote.api.core.ApiResponse
-import fd.cmp.movie.data.remote.request.MovieRequest
-import fd.cmp.movie.data.remote.response.MoviesResponse
+import fd.cmp.movie.data.remote.request.UserLoginRequest
+import fd.cmp.movie.data.remote.response.UserLoginResponse
 
 interface UserRepository {
-    suspend fun search(request: MovieRequest): ApiResponse<MoviesResponse>
-    suspend fun detail(id: Int?): ApiResponse<Movie>
+    suspend fun login(request: UserLoginRequest): ApiResponse<UserLoginResponse>
+    fun saveToken(token : String?)
+    fun getToken() : String
 }

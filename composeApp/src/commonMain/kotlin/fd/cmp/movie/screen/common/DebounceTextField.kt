@@ -12,16 +12,19 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import cmp_movie.composeapp.generated.resources.Res
+import cmp_movie.composeapp.generated.resources.search_placeholder
 import fd.cmp.movie.helper.UiHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import org.jetbrains.compose.ui.tooling.preview.Preview
+import org.jetbrains.compose.resources.stringResource
 
 class Debouncer(
     private val coroutineScope: CoroutineScope,
@@ -40,10 +43,10 @@ class Debouncer(
 
 @Composable
 fun DebounceTextField(
-    placeholderText: String,
+    placeholderText: String = stringResource(Res.string.search_placeholder),
     onDebouncedInput: (String) -> Unit
 ) {
-    var text by remember { mutableStateOf("") }
+    var text by rememberSaveable { mutableStateOf("") }
     val coroutineScope = rememberCoroutineScope()
     val debouncer = remember { Debouncer(coroutineScope, 1000L) } // 1000 milliseconds debounce time
 
@@ -59,19 +62,8 @@ fun DebounceTextField(
                 onDebouncedInput(text)
             }
         },
-        suffix = { Icon(Icons.Default.Search, contentDescription = "search") },
+        suffix = { Icon(Icons.Default.Search, contentDescription = placeholderText) },
         placeholder = { Text(placeholderText) },
         colors = UiHelper.textFieldCustomColors()
-    )
-}
-
-@Preview
-@Composable
-fun PreviewDebouncedTextField() {
-    DebounceTextField(
-        placeholderText = "Search here...",
-        onDebouncedInput = { input ->
-            println("Debounced text: $input")
-        }
     )
 }

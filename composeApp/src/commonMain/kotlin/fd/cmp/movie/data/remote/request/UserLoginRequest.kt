@@ -1,6 +1,12 @@
 package fd.cmp.movie.data.remote.request
 
-data class LoginRequest(
-    var username: String,
-    var password: String
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class UserLoginRequest(
+    @SerialName("email")
+    var email: String? = null,
+    @SerialName("password")
+    var password: String? = null
 )

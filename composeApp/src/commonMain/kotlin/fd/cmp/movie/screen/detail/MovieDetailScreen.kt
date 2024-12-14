@@ -31,14 +31,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cmp_movie.composeapp.generated.resources.Res
 import cmp_movie.composeapp.generated.resources.compose_multiplatform
+import cmp_movie.composeapp.generated.resources.genre
 import cmp_movie.composeapp.generated.resources.ic_back
-import coil3.compose.AsyncImage
+import cmp_movie.composeapp.generated.resources.rating
+import cmp_movie.composeapp.generated.resources.release_date
 import fd.cmp.movie.data.model.Movie
 import fd.cmp.movie.helper.UiHelper
 import fd.cmp.movie.screen.common.ErrorScreen
 import fd.cmp.movie.screen.common.LoadingScreen
+import fd.cmp.movie.screen.common.NetworkImage
 import fd.cmp.movie.screen.common.StarRating
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -102,30 +106,30 @@ fun BlogDetailView(movie: Movie, genres: String?) {
     ) {
         Box(modifier = Modifier.fillMaxWidth().height(320.dp)) {
             // Backdrop Image
-            AsyncImage(
-                model = movie.backdropPathUrl,
+            NetworkImage(
+                imageUrl = movie.backdropPathUrl,
                 contentDescription = movie.title,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(250.dp),
-                contentScale = ContentScale.Crop
+                contentScale = ContentScale.Crop,
             )
 
             Row(modifier = Modifier.fillMaxWidth().padding(8.dp).align(Alignment.BottomStart)) {
-                AsyncImage(
-                    model = movie.posterPathUrl,
+                NetworkImage(
+                    imageUrl = movie.posterPathUrl,
                     contentDescription = movie.title,
                     modifier = Modifier
                         .size(100.dp, 150.dp)
                         .clip(RoundedCornerShape(8.dp)),
                     contentScale = ContentScale.FillBounds,
-                    error = painterResource(Res.drawable.compose_multiplatform),
-                    placeholder = painterResource(Res.drawable.compose_multiplatform)
+                    errorRes = Res.drawable.compose_multiplatform,
+                    placeholderRes = Res.drawable.compose_multiplatform
                 )
 
                 Column(modifier = Modifier.align(Alignment.Bottom)) {
                     Text(
-                        text = "Release Date : ${movie.releaseDate}",
+                        text = "${stringResource(Res.string.release_date)} : ${movie.releaseDate}",
                         color = Color.Gray,
                         style = MaterialTheme.typography.bodyMedium,
                         modifier = Modifier.padding(horizontal = 8.dp)
@@ -133,7 +137,7 @@ fun BlogDetailView(movie: Movie, genres: String?) {
 
                     Row(modifier = Modifier.padding(horizontal = 8.dp)) {
                         Text(
-                            text = "Rating : ${movie.formattedVoteAverage}",
+                            text = "${stringResource(Res.string.rating)} : ${movie.formattedVoteAverage}",
                             color = Color.Gray,
                             style = MaterialTheme.typography.bodyMedium
                         )
@@ -141,7 +145,7 @@ fun BlogDetailView(movie: Movie, genres: String?) {
                     }
 
                     Text(
-                        text = "Genre : $genres",
+                        text = "${stringResource(Res.string.genre)} : $genres",
                         maxLines = 1,
                         color = Color.Gray,
                         style = MaterialTheme.typography.bodyMedium,

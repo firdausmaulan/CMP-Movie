@@ -6,7 +6,17 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class User(
     @SerialName("id")
-    val id: Int? = null,
+    val id: Int?,
+    @SerialName("email")
+    val email: String?,
     @SerialName("name")
-    val name: String? = null
+    val name: String?,
+    @SerialName("phone")
+    val phone: String?,
+    @SerialName("dateOfBirth")
+    val dateOfBirth: String?,
+    @SerialName("imagePath")
+    val imagePath: String?,
+    @SerialName("token")
+    val token: String? = null
 )

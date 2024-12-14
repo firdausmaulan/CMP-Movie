@@ -23,9 +23,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cmp_movie.composeapp.generated.resources.Res
 import cmp_movie.composeapp.generated.resources.compose_multiplatform
-import coil3.compose.AsyncImage
 import fd.cmp.movie.data.model.Movie
-import org.jetbrains.compose.resources.painterResource
+import fd.cmp.movie.screen.common.NetworkImage
 
 @Composable
 fun MovieItem(item: Movie, onItemClick: (movie: Movie) -> Unit) {
@@ -36,38 +35,37 @@ fun MovieItem(item: Movie, onItemClick: (movie: Movie) -> Unit) {
         onClick = { onItemClick(item) },
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
-            Text(
-                text = item.title.toString(),
-                modifier = Modifier.fillMaxWidth().padding(8.dp),
-                color = Color.Black,
-                fontWeight = FontWeight.Bold,
-                fontSize = 16.sp
-            )
-
             Box(modifier = Modifier.fillMaxWidth()) {
-                AsyncImage(
-                    model = item.backdropPathUrl,
+                NetworkImage(
+                    imageUrl = item.backdropPathUrl,
                     contentDescription = item.title,
                     contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(8.dp))
-                        .fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth()
                         .height(200.dp)
+                        .clip(RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp))
                         .blur(radius = 10.dp)
-                        .alpha(0.8f)
+                        .alpha(0.8f),
                 )
 
-                AsyncImage(
-                    model = item.posterPathUrl,
+                NetworkImage(
+                    imageUrl = item.posterPathUrl,
                     contentDescription = item.title,
                     modifier = Modifier.size(150.dp, 200.dp)
                         .clip(RoundedCornerShape(8.dp))
                         .align(Alignment.Center),
                     contentScale = ContentScale.FillBounds,
-                    error = painterResource(Res.drawable.compose_multiplatform),
-                    placeholder = painterResource(Res.drawable.compose_multiplatform)
+                    errorRes = Res.drawable.compose_multiplatform,
+                    placeholderRes = Res.drawable.compose_multiplatform,
                 )
             }
+
+            Text(
+                text = item.title.toString(),
+                modifier = Modifier.fillMaxWidth().padding(8.dp),
+                color = Color.Black,
+                fontWeight = FontWeight.SemiBold,
+                fontSize = 16.sp
+            )
         }
     }
 }

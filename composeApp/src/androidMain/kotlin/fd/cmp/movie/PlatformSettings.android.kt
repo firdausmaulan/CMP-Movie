@@ -1,5 +1,7 @@
 package fd.cmp.movie
 
+import android.content.Context
+
 actual fun providePlatformSettings(): PlatformSettings {
-    TODO("Not yet implemented")
+    return PlatformSettings(MovieApp.appContext)
 }

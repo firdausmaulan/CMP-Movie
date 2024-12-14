@@ -4,7 +4,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.lightColorScheme
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -12,14 +12,8 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import fd.cmp.movie.screen.detail.MovieDetailScreen
 import fd.cmp.movie.screen.list.MovieListScreen
-import kotlinx.serialization.Serializable
+import fd.cmp.movie.screen.login.UserLoginScreen
 import org.jetbrains.compose.ui.tooling.preview.Preview
-
-@Serializable
-object ListDestination
-
-@Serializable
-data class DetailDestination(val objectId: Int?, val genres : String?)
 
 @Composable
 @Preview
@@ -29,16 +23,23 @@ fun App() {
     ) {
         Surface {
             val navController: NavHostController = rememberNavController()
-            NavHost(navController = navController, startDestination = ListDestination) {
-                composable<ListDestination> {
-                    MovieListScreen(navigateToDetails = { objectId, genres ->
-                        navController.navigate(DetailDestination(objectId, genres))
+            NavHost(navController = navController, startDestination = Route.Login) {
+                composable<Route.Login> {
+                    UserLoginScreen(navigateToMovieList = {
+                        navController.navigate(Route.MovieList) {
+                            popUpTo(Route.Login) { inclusive = true }
+                        }
                     })
                 }
-                composable<DetailDestination> { backStackEntry ->
+                composable<Route.MovieList> {
+                    MovieListScreen(navigateToDetails = { objectId, genres ->
+                        navController.navigate(Route.MovieDetail(objectId, genres))
+                    })
+                }
+                composable<Route.MovieDetail> { backStackEntry ->
                     MovieDetailScreen(
-                        movieId = backStackEntry.toRoute<DetailDestination>().objectId,
-                        genres = backStackEntry.toRoute<DetailDestination>().genres,
+                        movieId = backStackEntry.toRoute<Route.MovieDetail>().objectId,
+                        genres = backStackEntry.toRoute<Route.MovieDetail>().genres,
                         navigateBack = {
                             navController.popBackStack()
                         }

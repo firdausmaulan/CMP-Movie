@@ -21,18 +21,23 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import cmp_movie.composeapp.generated.resources.Res
+import cmp_movie.composeapp.generated.resources.error_image
+import cmp_movie.composeapp.generated.resources.error_message
+import cmp_movie.composeapp.generated.resources.error_sub_message
 import cmp_movie.composeapp.generated.resources.ic_question
+import cmp_movie.composeapp.generated.resources.ok
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ErrorBottomSheetDialog(
     onDismissRequest: () -> Unit,
     imageRes: DrawableResource = Res.drawable.ic_question,
-    message: String = "Oops.. Something went wrong",
-    subMessage: String = "Please try again later",
-    buttonText: String = "OK",
+    message: String = stringResource(Res.string.error_message),
+    subMessage: String = stringResource(Res.string.error_sub_message),
+    buttonText: String = stringResource(Res.string.ok),
     buttonColor: Color = Color.Red,
     onButtonClick: () -> Unit = onDismissRequest
 ) {
@@ -49,7 +54,7 @@ fun ErrorBottomSheetDialog(
             // Image
             Image(
                 painter = painterResource(imageRes),
-                contentDescription = "Error Image",
+                contentDescription = stringResource(Res.string.error_image),
                 modifier = Modifier
                     .height(150.dp)
                     .width(200.dp)
@@ -78,7 +83,6 @@ fun ErrorBottomSheetDialog(
                     onDismissRequest()
                 },
                 colors = ButtonDefaults.buttonColors(contentColor = buttonColor),
-                shape = RoundedCornerShape(8.dp),
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(text = buttonText, color = Color.White)

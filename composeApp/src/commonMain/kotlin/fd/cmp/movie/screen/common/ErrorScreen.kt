@@ -16,15 +16,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import cmp_movie.composeapp.generated.resources.Res
+import cmp_movie.composeapp.generated.resources.error_image
+import cmp_movie.composeapp.generated.resources.error_message
+import cmp_movie.composeapp.generated.resources.error_sub_message
 import cmp_movie.composeapp.generated.resources.ic_question
+import cmp_movie.composeapp.generated.resources.retry
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun ErrorScreen(
     imageRes: DrawableResource = Res.drawable.ic_question,
-    message: String = "Oops.. Something went wrong",
-    subMessage: String = "Please try again later",
+    message: String = stringResource(Res.string.error_message),
+    subMessage: String = stringResource(Res.string.error_sub_message),
     onRetry: (() -> Unit)? = null
 ) {
     Column(
@@ -37,7 +42,7 @@ fun ErrorScreen(
             modifier = Modifier
                 .height(150.dp)
                 .width(250.dp),
-            contentDescription = "Error"
+            contentDescription = stringResource(Res.string.error_image)
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(text = message, style = MaterialTheme.typography.bodyLarge, color = Color.Black)
@@ -45,7 +50,7 @@ fun ErrorScreen(
         if (onRetry != null) {
             Spacer(modifier = Modifier.height(16.dp))
             Button(onClick = onRetry) {
-                Text(text = "Retry")
+                Text(text = stringResource(Res.string.retry))
             }
         }
     }

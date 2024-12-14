@@ -1,4 +1,9 @@
 package fd.cmp.movie
 
-class PlatformSettings {
+import com.russhwolf.settings.Settings
+
+expect class PlatformSettings {
+    fun createSettings(): Settings
 }
+
+expect fun providePlatformSettings(): PlatformSettings
