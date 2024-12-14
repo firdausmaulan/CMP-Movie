@@ -1,4 +1,4 @@
-package fd.cmp.movie
+package fd.cmp.movie.app
 
 class Greeting {
     private val platform = getPlatform()
