@@ -15,15 +15,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import cmp_movie.composeapp.generated.resources.Res
+import cmp_movie.composeapp.generated.resources.empty_message
+import cmp_movie.composeapp.generated.resources.empty_sub_message
 import cmp_movie.composeapp.generated.resources.ic_question
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun EmptyScreen(
     imageRes: DrawableResource = Res.drawable.ic_question,
-    message: String = "No data available",
-    subMessage: String = "Please check back later"
+    message: String = stringResource(Res.string.empty_message),
+    subMessage: String = stringResource(Res.string.empty_sub_message)
 ) {
     Column(
         modifier = Modifier.fillMaxSize(),

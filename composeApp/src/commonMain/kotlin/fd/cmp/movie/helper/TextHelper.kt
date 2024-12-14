@@ -30,4 +30,10 @@ object TextHelper {
         return 14
     }
 
+    fun isValidEmailFormat(email: String?): Boolean {
+        if (email == null) return false
+        val emailRegex = Regex("^[A-Za-z](.*)([@]{1})(.{1,})(\\.)(.{1,})")
+        return emailRegex.matches(email)
+    }
+
 }

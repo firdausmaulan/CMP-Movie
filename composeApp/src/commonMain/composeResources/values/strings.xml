@@ -1,15 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <resources>
-    <string name="label_title">Title</string>
-    <string name="label_artist">Artist</string>
-    <string name="label_date">Date</string>
-    <string name="label_dimensions">Dimensions</string>
-    <string name="label_medium">Medium</string>
-    <string name="label_department">Department</string>
-    <string name="label_repository">Repository</string>
-    <string name="label_credits">Credits</string>
-
+    <string name="app_name">My Movies</string>
     <string name="back">Back</string>
-
-    <string name="no_data_available">No data available</string>
+    <string name="search_placeholder">Search here</string>
+    <string name="empty_message">No data available</string>
+    <string name="empty_sub_message">Please check back later</string>
+    <string name="error_image">Error Image</string>
+    <string name="error_message">Oops.. Something went wrong</string>
+    <string name="error_sub_message">Please try again later</string>
+    <string name="retry">Retry</string>
+    <string name="ok">OK</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="error_email">Invalid email format</string>
+    <string name="error_password">Password must be at least 8 characters</string>
+    <string name="login">Login</string>
+    <string name="release_date">Release Date</string>
+    <string name="rating">Rating</string>
+    <string name="genre">Genre</string>
 </resources>

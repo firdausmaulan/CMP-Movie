@@ -6,11 +6,11 @@ import fd.cmp.movie.data.remote.api.service.MovieApiService
 import fd.cmp.movie.data.remote.request.MovieRequest
 import fd.cmp.movie.data.remote.response.MoviesResponse
 
-class MovieRepositoryImpl(private val movieApiService: MovieApiService) : MovieRepository {
+class MovieRepositoryImpl(private val apiService: MovieApiService) : MovieRepository {
 
     override suspend fun search(request: MovieRequest): ApiResponse<MoviesResponse> {
-        val movies = movieApiService.search(request)
-        val genres = movieApiService.genres()
+        val movies = apiService.search(request)
+        val genres = apiService.genres()
         if (movies is ApiResponse.Success && genres is ApiResponse.Success) {
             val moviesData = movies.data
             val genresData = genres.data
@@ -24,12 +24,14 @@ class MovieRepositoryImpl(private val movieApiService: MovieApiService) : MovieR
             }
             return ApiResponse.Success(moviesData.copy(results = moviesWithGenreNames))
         }
+        if (movies is ApiResponse.Error) return movies
+        if (genres is ApiResponse.Error) return genres
         return ApiResponse.Error(500, "Unknown error occurred")
     }
 
     override suspend fun detail(id: Int?): ApiResponse<Movie> {
-        val movie = movieApiService.detail(id)
-        val genres = movieApiService.genres()
+        val movie = apiService.detail(id)
+        val genres = apiService.genres()
         if (movie is ApiResponse.Success && genres is ApiResponse.Success) {
             val movieData = movie.data
             val genresData = genres.data
@@ -45,6 +47,8 @@ class MovieRepositoryImpl(private val movieApiService: MovieApiService) : MovieR
                 )
             )
         }
+        if (movie is ApiResponse.Error) return movie
+        if (genres is ApiResponse.Error) return genres
         return ApiResponse.Error(500, "Unknown error occurred")
     }
 }

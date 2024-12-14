@@ -26,12 +26,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import cmp_movie.composeapp.generated.resources.Res
+import cmp_movie.composeapp.generated.resources.app_name
 import fd.cmp.movie.data.model.Movie
 import fd.cmp.movie.helper.UiHelper
 import fd.cmp.movie.screen.common.DebounceTextField
 import fd.cmp.movie.screen.common.EmptyScreen
 import fd.cmp.movie.screen.common.ErrorScreen
 import fd.cmp.movie.screen.common.LoadingScreen
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -48,7 +51,7 @@ fun MovieListScreen(
                 colors = UiHelper.topAppBarColors(),
                 title = {
                     Text(
-                        "My Movies",
+                        stringResource(Res.string.app_name),
                         textAlign = TextAlign.Center,
                         fontWeight = FontWeight.SemiBold,
                     )
@@ -72,9 +75,7 @@ fun MovieListScreen(
                     .background(color = MaterialTheme.colorScheme.background)
             ) {
                 Box(Modifier.padding(8.dp)) {
-                    DebounceTextField(placeholderText = "Search here") {
-                        viewModel.search(it)
-                    }
+                    DebounceTextField { viewModel.search(it) }
                 }
                 when (val state = viewModel.state) {
                     is MovieListState.Loading -> LoadingScreen()

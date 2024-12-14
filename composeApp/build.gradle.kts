@@ -25,7 +25,8 @@ kotlin {
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
             baseName = "ComposeApp"
-            isStatic = true
+            isStatic = false
+            linkerOpts("-lsqlite3")
         }
     }
     
@@ -51,11 +52,13 @@ kotlin {
             implementation(libs.ktor.serialization.kotlinx.json)
             implementation(libs.ktor.client.logging)
             implementation(libs.ktor.client.auth)
+            implementation(libs.inspektify.ktor3)
             implementation(libs.coil.compose)
             implementation(libs.coil.network.ktor)
             implementation(libs.koin.core)
             implementation(libs.koin.compose.viewmodel)
             implementation(libs.navigation.compose)
+            implementation(libs.multiplatform.settings)
         }
     }
 }
