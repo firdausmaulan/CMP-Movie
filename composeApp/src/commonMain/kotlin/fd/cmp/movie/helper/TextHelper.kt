@@ -36,4 +36,20 @@ object TextHelper {
         return emailRegex.matches(email)
     }
 
+    fun isValidPassword(password: String?): Boolean {
+        return password?.isNotEmpty() == true && password.length >= 8
+    }
+
+    fun isValidPhoneNumber(phoneNumber: String?): Boolean {
+        if (phoneNumber == null) return false
+        val phoneNumberRegex = Regex("^\\d{10,15}\$")
+        return phoneNumberRegex.matches(phoneNumber)
+    }
+
+    fun isValidDate(date: String?): Boolean {
+        // Date format dd-mm-yyyy
+        if (date == null) return false
+        val dateRegex = Regex("^\\d{2}-\\d{2}-\\d{4}\$")
+        return dateRegex.matches(date)
+    }
 }

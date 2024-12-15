@@ -1,6 +1,4 @@
-package fd.cmp.movie.data.local
-
-import fd.cmp.movie.PlatformSettings
+package fd.cmp.movie.data.local.keyval
 
 class AppSettings(platformSettings: PlatformSettings) {
     private val settings = platformSettings.createSettings()
@@ -13,7 +11,16 @@ class AppSettings(platformSettings: PlatformSettings) {
         return settings.getString("token", defaultValue = "")
     }
 
-    fun clearToken() {
+    fun saveEmail(email: String?) {
+        if (email != null) settings.putString("email", email)
+    }
+
+    fun getEmail(): String {
+        return settings.getString("email", defaultValue = "")
+    }
+
+    fun clear() {
         settings.remove("token")
+        settings.remove("email")
     }
 }

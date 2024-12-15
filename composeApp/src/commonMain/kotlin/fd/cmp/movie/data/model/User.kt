@@ -1,22 +1,31 @@
 package fd.cmp.movie.data.model
 
+import fd.cmp.movie.helper.Constants
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class User(
     @SerialName("id")
-    val id: Int?,
+    val id: Long?,
     @SerialName("email")
     val email: String?,
     @SerialName("name")
-    val name: String?,
+    var name: String?,
     @SerialName("phone")
-    val phone: String?,
+    var phone: String?,
     @SerialName("dateOfBirth")
-    val dateOfBirth: String?,
+    var dateOfBirth: String?,
+    @SerialName("address")
+    var address: String?,
+    @SerialName("latitude")
+    var latitude: Double?,
+    @SerialName("longitude")
+    var longitude: Double?,
     @SerialName("imagePath")
-    val imagePath: String?,
+    var imagePath: String?,
+    @SerialName("imageUrl")
+    val imageUrl: String? = Constants.BASE_USER_URL + imagePath,
     @SerialName("token")
     val token: String? = null
 )

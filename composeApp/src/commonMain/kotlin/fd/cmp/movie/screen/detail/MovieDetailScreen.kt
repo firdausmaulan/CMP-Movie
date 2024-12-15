@@ -30,11 +30,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cmp_movie.composeapp.generated.resources.Res
+import cmp_movie.composeapp.generated.resources.back_icon_description
 import cmp_movie.composeapp.generated.resources.compose_multiplatform
-import cmp_movie.composeapp.generated.resources.genre
+import cmp_movie.composeapp.generated.resources.genre_label
 import cmp_movie.composeapp.generated.resources.ic_back
-import cmp_movie.composeapp.generated.resources.rating
-import cmp_movie.composeapp.generated.resources.release_date
+import cmp_movie.composeapp.generated.resources.rating_label
+import cmp_movie.composeapp.generated.resources.release_date_label
 import fd.cmp.movie.data.model.Movie
 import fd.cmp.movie.helper.UiHelper
 import fd.cmp.movie.screen.common.ErrorScreen
@@ -75,7 +76,7 @@ fun MovieDetailScreen(
                     IconButton(onClick = { navigateBack() }) {
                         Icon(
                             painter = painterResource(Res.drawable.ic_back),
-                            contentDescription = "Back"
+                            contentDescription = stringResource(Res.string.back_icon_description)
                         )
                     }
                 }
@@ -129,7 +130,7 @@ fun BlogDetailView(movie: Movie, genres: String?) {
 
                 Column(modifier = Modifier.align(Alignment.Bottom)) {
                     Text(
-                        text = "${stringResource(Res.string.release_date)} : ${movie.releaseDate}",
+                        text = "${stringResource(Res.string.release_date_label)} : ${movie.releaseDate}",
                         color = Color.Gray,
                         style = MaterialTheme.typography.bodyMedium,
                         modifier = Modifier.padding(horizontal = 8.dp)
@@ -137,7 +138,7 @@ fun BlogDetailView(movie: Movie, genres: String?) {
 
                     Row(modifier = Modifier.padding(horizontal = 8.dp)) {
                         Text(
-                            text = "${stringResource(Res.string.rating)} : ${movie.formattedVoteAverage}",
+                            text = "${stringResource(Res.string.rating_label)} : ${movie.formattedVoteAverage}",
                             color = Color.Gray,
                             style = MaterialTheme.typography.bodyMedium
                         )
@@ -145,7 +146,7 @@ fun BlogDetailView(movie: Movie, genres: String?) {
                     }
 
                     Text(
-                        text = "${stringResource(Res.string.genre)} : $genres",
+                        text = "${stringResource(Res.string.genre_label)} : $genres",
                         maxLines = 1,
                         color = Color.Gray,
                         style = MaterialTheme.typography.bodyMedium,

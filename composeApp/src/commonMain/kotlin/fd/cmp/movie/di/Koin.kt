@@ -1,7 +1,8 @@
 package fd.cmp.movie.di
 
-import fd.cmp.movie.PlatformSettings
-import fd.cmp.movie.data.local.AppSettings
+import fd.cmp.movie.data.local.keyval.AppSettings
+import fd.cmp.movie.data.local.db.service.UserDbService
+import fd.cmp.movie.data.local.keyval.providePlatformSettings
 import fd.cmp.movie.data.remote.api.core.AppHttpClient
 import fd.cmp.movie.data.remote.api.service.MovieApiService
 import fd.cmp.movie.data.remote.api.service.UserApiService
@@ -9,10 +10,10 @@ import fd.cmp.movie.data.repository.MovieRepository
 import fd.cmp.movie.data.repository.MovieRepositoryImpl
 import fd.cmp.movie.data.repository.UserRepository
 import fd.cmp.movie.data.repository.UserRepositoryImpl
-import fd.cmp.movie.providePlatformSettings
 import fd.cmp.movie.screen.detail.MovieDetailViewModel
 import fd.cmp.movie.screen.list.MovieListViewModel
 import fd.cmp.movie.screen.login.UserLoginViewModel
+import fd.cmp.movie.screen.user.UserViewModel
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.logging.LogLevel
@@ -49,13 +50,15 @@ val dataModule = module {
     single<MovieRepository> { MovieRepositoryImpl(get()) }
 
     single { UserApiService(get()) }
-    single<UserRepository> { UserRepositoryImpl(get(), get()) }
+    single { UserDbService() }
+    single<UserRepository> { UserRepositoryImpl(get(), get(), get()) }
 }
 
 val viewModelModule = module {
     factoryOf(::MovieListViewModel)
     factoryOf(::MovieDetailViewModel)
     factoryOf(::UserLoginViewModel)
+    factoryOf(::UserViewModel)
 }
 
 fun initKoin() {

@@ -9,6 +9,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -28,19 +30,23 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import cmp_movie.composeapp.generated.resources.Res
 import cmp_movie.composeapp.generated.resources.app_name
+import cmp_movie.composeapp.generated.resources.ic_user_circle
+import cmp_movie.composeapp.generated.resources.profile_image_description
 import fd.cmp.movie.data.model.Movie
 import fd.cmp.movie.helper.UiHelper
 import fd.cmp.movie.screen.common.DebounceTextField
 import fd.cmp.movie.screen.common.EmptyScreen
 import fd.cmp.movie.screen.common.ErrorScreen
 import fd.cmp.movie.screen.common.LoadingScreen
+import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MovieListScreen(
-    navigateToDetails: (objectId: Int?, genres: String?) -> Unit
+    navigateToDetails: (objectId: Int?, genres: String?) -> Unit,
+    navigateToUser: () -> Unit
 ) {
     val viewModel = koinViewModel<MovieListViewModel>()
     val pullRefreshState = rememberPullToRefreshState()
@@ -55,6 +61,14 @@ fun MovieListScreen(
                         textAlign = TextAlign.Center,
                         fontWeight = FontWeight.SemiBold,
                     )
+                },
+                actions = {
+                    IconButton(onClick = { navigateToUser() }) {
+                        Icon(
+                            painter = painterResource(Res.drawable.ic_user_circle),
+                            contentDescription = stringResource(Res.string.profile_image_description),
+                        )
+                    }
                 }
             )
         }

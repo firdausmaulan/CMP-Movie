@@ -13,6 +13,7 @@ import androidx.navigation.toRoute
 import fd.cmp.movie.screen.detail.MovieDetailScreen
 import fd.cmp.movie.screen.list.MovieListScreen
 import fd.cmp.movie.screen.login.UserLoginScreen
+import fd.cmp.movie.screen.user.UserScreen
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -32,9 +33,14 @@ fun App() {
                     })
                 }
                 composable<Route.MovieList> {
-                    MovieListScreen(navigateToDetails = { objectId, genres ->
-                        navController.navigate(Route.MovieDetail(objectId, genres))
-                    })
+                    MovieListScreen(
+                        navigateToDetails = { objectId, genres ->
+                            navController.navigate(Route.MovieDetail(objectId, genres))
+                        },
+                        navigateToUser = {
+                            navController.navigate(Route.User)
+                        }
+                    )
                 }
                 composable<Route.MovieDetail> { backStackEntry ->
                     MovieDetailScreen(
@@ -42,6 +48,18 @@ fun App() {
                         genres = backStackEntry.toRoute<Route.MovieDetail>().genres,
                         navigateBack = {
                             navController.popBackStack()
+                        }
+                    )
+                }
+                composable<Route.User> {
+                    UserScreen(
+                        navigateBack = {
+                            navController.popBackStack()
+                        },
+                        onLogout = {
+                            navController.navigate(Route.Login) {
+                                popUpTo(Route.MovieList) { inclusive = true }
+                            }
                         }
                     )
                 }

@@ -1,28 +1,20 @@
 package fd.cmp.movie.screen.common
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.DefaultAlpha
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import cmp_movie.composeapp.generated.resources.Res
+import cmp_movie.composeapp.generated.resources.compose_multiplatform
 import coil3.compose.AsyncImage
-import coil3.compose.AsyncImagePainter
-import coil3.compose.rememberAsyncImagePainter
-import coil3.request.ImageRequest
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 
@@ -49,8 +41,8 @@ fun NetworkImage(
     modifier: Modifier = Modifier,
     contentDescription: String? = null,
     contentScale: ContentScale = ContentScale.Crop,
-    placeholderRes: DrawableResource? = null,
-    errorRes: DrawableResource? = null,
+    placeholderRes: DrawableResource = Res.drawable.compose_multiplatform,
+    errorRes: DrawableResource = Res.drawable.compose_multiplatform,
     width: Dp? = null,
     height: Dp? = null,
     cornerRadius: Dp = 0.dp,
@@ -76,7 +68,7 @@ fun NetworkImage(
         contentDescription = contentDescription,
         modifier = finalModifier,
         contentScale = contentScale,
-        placeholder = placeholderRes?.let { painterResource(it) },
-        error = errorRes?.let { painterResource(it) }
+        placeholder = painterResource(placeholderRes),
+        error = painterResource(errorRes)
     )
 }

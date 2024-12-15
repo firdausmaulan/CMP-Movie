@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import cmp_movie.composeapp.generated.resources.Res
+import cmp_movie.composeapp.generated.resources.empty_image_description
 import cmp_movie.composeapp.generated.resources.empty_message
 import cmp_movie.composeapp.generated.resources.empty_sub_message
 import cmp_movie.composeapp.generated.resources.ic_question
@@ -38,7 +39,7 @@ fun EmptyScreen(
             modifier = Modifier
                 .height(150.dp)
                 .width(250.dp),
-            contentDescription = "Empty"
+            contentDescription = stringResource(Res.string.empty_image_description)
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(text = message, style = MaterialTheme.typography.bodyLarge, color = Color.Black)

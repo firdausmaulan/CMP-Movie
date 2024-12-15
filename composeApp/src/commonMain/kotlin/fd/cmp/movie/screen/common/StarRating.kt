@@ -10,10 +10,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter.Companion.tint
 import androidx.compose.ui.unit.dp
 import cmp_movie.composeapp.generated.resources.Res
+import cmp_movie.composeapp.generated.resources.empty_star_icon_description
+import cmp_movie.composeapp.generated.resources.full_star_icon_description
+import cmp_movie.composeapp.generated.resources.half_star_icon_description
 import cmp_movie.composeapp.generated.resources.ic_half_star
 import cmp_movie.composeapp.generated.resources.ic_star
 import cmp_movie.composeapp.generated.resources.ic_star_outline
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 
 
 @Composable
@@ -33,7 +37,7 @@ fun StarRating(
         repeat(fullStars) {
             Image(
                 painter = painterResource(Res.drawable.ic_star),
-                contentDescription = "Full Star",
+                contentDescription = stringResource(Res.string.full_star_icon_description),
                 modifier = Modifier.size(starSize.dp),
                 colorFilter = tint(starColor)
             )
@@ -41,7 +45,7 @@ fun StarRating(
         if (hasHalfStar) {
             Image(
                 painter = painterResource(Res.drawable.ic_half_star),
-                contentDescription = "Half Star",
+                contentDescription = stringResource(Res.string.half_star_icon_description),
                 modifier = Modifier.size(starSize.dp),
                 colorFilter = tint(starColor)
             )
@@ -49,7 +53,7 @@ fun StarRating(
         repeat(emptyStars) {
             Image(
                 painter = painterResource(Res.drawable.ic_star_outline),
-                contentDescription = "Empty Star",
+                contentDescription = stringResource(Res.string.empty_star_icon_description),
                 modifier = Modifier.size(starSize.dp),
                 colorFilter = tint(starColor)
             )

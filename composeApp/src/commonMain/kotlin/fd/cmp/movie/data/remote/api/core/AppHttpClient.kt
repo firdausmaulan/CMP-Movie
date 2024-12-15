@@ -1,6 +1,6 @@
 package fd.cmp.movie.data.remote.api.core
 
-import fd.cmp.movie.data.local.AppSettings
+import fd.cmp.movie.data.local.keyval.AppSettings
 import fd.cmp.movie.helper.Constants
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
