@@ -1,4 +1,4 @@
-package fd.cmp.movie
+package fd.cmp.movie.data.local.keyval
 
 import com.russhwolf.settings.Settings
 

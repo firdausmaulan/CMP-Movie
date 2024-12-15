@@ -8,13 +8,20 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.kotlinxSerialization)
+    id("app.cash.sqldelight") version "2.0.2"
 }
 
 kotlin {
     androidTarget {
-        @OptIn(ExperimentalKotlinGradlePluginApi::class)
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_11)
+        // Somehow error when adding sqldelight
+        // @OptIn(ExperimentalKotlinGradlePluginApi::class)
+        // compilerOptions {
+        //     jvmTarget.set(JvmTarget.JVM_11)
+        // }
+        compilations.all {
+            kotlinOptions {
+                jvmTarget = "11"
+            }
         }
     }
     
@@ -36,9 +43,11 @@ kotlin {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
             implementation(libs.ktor.client.okhttp)
+            implementation("app.cash.sqldelight:android-driver:2.0.2")
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
+            implementation("app.cash.sqldelight:native-driver:2.0.2")
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -94,3 +103,13 @@ dependencies {
     debugImplementation(compose.uiTooling)
 }
 
+// if this code below not auto generated file for us then
+// we should invalidate cache and restart gradle
+// tips : install sqldelight plugin
+sqldelight {
+    databases {
+        create("AppDatabase") {
+            packageName.set("fd.cmp.movie.data.local.db")
+        }
+    }
+}

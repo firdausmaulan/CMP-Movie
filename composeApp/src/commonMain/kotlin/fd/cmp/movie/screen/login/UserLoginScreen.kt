@@ -27,14 +27,15 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import cmp_movie.composeapp.generated.resources.Res
-import cmp_movie.composeapp.generated.resources.email
+import cmp_movie.composeapp.generated.resources.email_label
 import cmp_movie.composeapp.generated.resources.error_email
 import cmp_movie.composeapp.generated.resources.error_password
 import cmp_movie.composeapp.generated.resources.ic_visible
 import cmp_movie.composeapp.generated.resources.ic_visible_off
-import cmp_movie.composeapp.generated.resources.login
-import cmp_movie.composeapp.generated.resources.password
+import cmp_movie.composeapp.generated.resources.login_action
+import cmp_movie.composeapp.generated.resources.password_label
 import fd.cmp.movie.data.remote.request.UserLoginRequest
+import fd.cmp.movie.helper.TextHelper
 import fd.cmp.movie.helper.UiHelper
 import fd.cmp.movie.screen.common.ErrorBottomSheetDialog
 import fd.cmp.movie.screen.common.LoadingButton
@@ -80,9 +81,9 @@ fun UserLoginScreen(
                     value = email,
                     onValueChange = {
                         email = it
-                        viewModel.emailError = !viewModel.isValidEmail(it)
+                        viewModel.emailError = !TextHelper.isValidEmailFormat(it)
                     },
-                    label = { Text(stringResource(Res.string.email)) },
+                    label = { Text(stringResource(Res.string.email_label)) },
                     isError = viewModel.emailError,
                     singleLine = true,
                     modifier = Modifier
@@ -106,9 +107,9 @@ fun UserLoginScreen(
                     value = password,
                     onValueChange = {
                         password = it
-                        viewModel.passwordError = !viewModel.isValidPassword(it)
+                        viewModel.passwordError = !TextHelper.isValidPassword(it)
                     },
-                    label = { Text(stringResource(Res.string.password)) },
+                    label = { Text(stringResource(Res.string.password_label)) },
                     visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                     isError = viewModel.passwordError,
                     singleLine = true,
@@ -122,7 +123,7 @@ fun UserLoginScreen(
                             Icon(
                                 if (isPasswordVisible) painterResource(Res.drawable.ic_visible)
                                 else painterResource(Res.drawable.ic_visible_off),
-                                contentDescription = stringResource(Res.string.password)
+                                contentDescription = stringResource(Res.string.password_label)
                             )
                         }
                     }
@@ -144,16 +145,16 @@ fun UserLoginScreen(
                         Button(
                             onClick = {
                                 viewModel.emailError =
-                                    !viewModel.isValidEmail(userLoginRequest.email)
+                                    !TextHelper.isValidEmailFormat(userLoginRequest.email)
                                 viewModel.passwordError =
-                                    !viewModel.isValidPassword(userLoginRequest.password)
+                                    !TextHelper.isValidPassword(userLoginRequest.password)
                                 viewModel.login(userLoginRequest)
                             },
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(8.dp)
                         ) {
-                            Text(stringResource(Res.string.login))
+                            Text(stringResource(Res.string.login_action))
                         }
                     }
 

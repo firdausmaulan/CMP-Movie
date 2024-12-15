@@ -1,12 +1,16 @@
-package fd.cmp.movie
+package fd.cmp.movie.data.local.keyval
 
 import com.russhwolf.settings.NSUserDefaultsSettings
 import com.russhwolf.settings.Settings
-import platform.Foundation.NSUserDefaults
+
 
 actual class PlatformSettings {
     actual fun createSettings(): Settings {
         val delegate = NSUserDefaults.standardUserDefaults
         return NSUserDefaultsSettings(delegate)
     }
+}
+
+actual fun providePlatformSettings(): PlatformSettings {
+    return PlatformSettings()
 }

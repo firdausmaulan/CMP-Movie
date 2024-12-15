@@ -11,7 +11,7 @@ class UserApiService(private val appHttpClient: AppHttpClient) {
     suspend fun login(request: UserLoginRequest): ApiResponse<UserLoginResponse> {
 
         return appHttpClient.post(
-            baseUrl = Constants.BASE_USER_URL,
+            baseUrl = Constants.BASE_USER_URL + "/cmp/",
             endpoint = "login.php",
             body = request
         )

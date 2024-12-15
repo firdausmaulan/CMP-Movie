@@ -1,0 +1,45 @@
+CREATE TABLE TUser (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    email TEXT UNIQUE,
+    name TEXT,
+    phone TEXT,
+    dateOfBirth TEXT,
+    address TEXT,
+    latitude REAL,
+    longitude REAL,
+    imagePath TEXT
+);
+
+-- Insert a new user
+insertUser:
+INSERT INTO TUser (email, name, phone, dateOfBirth, address, latitude, longitude, imagePath)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+
+-- Update user by email
+updateUserByEmail:
+UPDATE TUser
+SET
+    name = ?,
+    phone = ?,
+    dateOfBirth = ?,
+    address = ?,
+    latitude = ?,
+    longitude = ?,
+    imagePath = ?
+WHERE email = ?;
+
+-- Select all users
+selectAllUsers:
+SELECT * FROM TUser;
+
+-- Select a user by ID
+selectUserById:
+SELECT * FROM TUser WHERE id = ?;
+
+-- Select a user by email
+selectUserByEmail:
+SELECT * FROM TUser WHERE email = ?;
+
+-- Delete a user by ID
+deleteUserById:
+DELETE FROM TUser WHERE id = ?;

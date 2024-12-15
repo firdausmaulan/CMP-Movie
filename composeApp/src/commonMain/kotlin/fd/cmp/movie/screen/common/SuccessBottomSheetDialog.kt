@@ -20,24 +20,25 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import cmp_movie.composeapp.generated.resources.Res
-import cmp_movie.composeapp.generated.resources.error_image_description
-import cmp_movie.composeapp.generated.resources.error_message
-import cmp_movie.composeapp.generated.resources.error_sub_message
-import cmp_movie.composeapp.generated.resources.ic_question
+import cmp_movie.composeapp.generated.resources.ic_success
 import cmp_movie.composeapp.generated.resources.ok
+import cmp_movie.composeapp.generated.resources.success_image_description
+import cmp_movie.composeapp.generated.resources.success_message
+import cmp_movie.composeapp.generated.resources.success_sub_message
+import fd.cmp.movie.helper.UiHelper
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ErrorBottomSheetDialog(
+fun SuccessBottomSheetDialog(
     onDismissRequest: () -> Unit,
-    imageRes: DrawableResource = Res.drawable.ic_question,
-    message: String = stringResource(Res.string.error_message),
-    subMessage: String = stringResource(Res.string.error_sub_message),
-    buttonText: String = stringResource(Res.string.ok),
-    buttonColor: Color = Color.Red,
+    imageRes: DrawableResource = Res.drawable.ic_success,
+    message: String = stringResource(Res.string.success_message),
+    subMessage: String = stringResource(Res.string.success_sub_message),
+    buttonText: String = stringResource(Res.string.ok).uppercase(),
+    buttonColor: Color = Color.Green,
     onButtonClick: () -> Unit = onDismissRequest
 ) {
     ModalBottomSheet(
@@ -53,7 +54,7 @@ fun ErrorBottomSheetDialog(
             // Image
             Image(
                 painter = painterResource(imageRes),
-                contentDescription = stringResource(Res.string.error_image_description),
+                contentDescription = stringResource(Res.string.success_image_description),
                 modifier = Modifier
                     .height(150.dp)
                     .width(200.dp)
@@ -82,6 +83,7 @@ fun ErrorBottomSheetDialog(
                     onDismissRequest()
                 },
                 colors = ButtonDefaults.buttonColors(contentColor = buttonColor),
+                elevation = UiHelper.buttonElevation(),
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(text = buttonText, color = Color.White)

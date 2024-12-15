@@ -27,17 +27,9 @@ class UserLoginViewModel(
         }
     }
 
-    fun isValidEmail(email: String?): Boolean {
-        return TextHelper.isValidEmailFormat(email)
-    }
-
-    fun isValidPassword(password: String?): Boolean {
-        return password?.isNotEmpty() == true && password.length >= 8
-    }
-
     private fun isValidRequest(request: UserLoginRequest): Boolean {
         if (request.email == null || request.password == null) return false
-        return isValidEmail(request.email) && request.password?.length!! >= 8
+        return TextHelper.isValidEmailFormat(request.email) && TextHelper.isValidPassword(request.password)
     }
 
     fun login(request: UserLoginRequest) {
@@ -48,6 +40,8 @@ class UserLoginViewModel(
             if (result is ApiResponse.Success) {
                 state = UserLoginState.Success
                 repository.saveToken(result.data.user?.token)
+                repository.saveEmail(result.data.user?.email)
+                repository.insertUser(result.data.user)
             } else if (result is ApiResponse.Error) {
                 state = UserLoginState.Error(result.message)
             }

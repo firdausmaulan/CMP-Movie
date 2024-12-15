@@ -1,21 +1,63 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <resources>
+    <!-- General -->
     <string name="app_name">My Movies</string>
+    <string name="ok">OK</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
     <string name="back">Back</string>
+    <string name="retry">Retry</string>
+    <string name="confirmation">Are you sure?</string>
+    <!-- General Search -->
     <string name="search_placeholder">Search here</string>
+    <!-- General Success Message -->
+    <string name="success_message">Success</string>
+    <string name="success_sub_message">Action completed successfully</string>
+    <!-- General Empty Message -->
     <string name="empty_message">No data available</string>
     <string name="empty_sub_message">Please check back later</string>
-    <string name="error_image">Error Image</string>
-    <string name="error_message">Oops.. Something went wrong</string>
+    <!-- General Error Messages -->
+    <string name="error_message">Oops... Something went wrong</string>
     <string name="error_sub_message">Please try again later</string>
-    <string name="retry">Retry</string>
-    <string name="ok">OK</string>
-    <string name="email">Email</string>
-    <string name="password">Password</string>
+
+    <!-- General Content Description -->
+    <string name="search_icon_description">Search Icon</string>
+    <string name="back_icon_description">Back Icon</string>
+    <string name="settings_icon_description">Settings Icon</string>
+    <string name="edit_profile_icon_description">Edit Profile Icon</string>
+    <string name="logout_icon_description">Logout Icon</string>
+    <string name="profile_image_description">Profile Image</string>
+    <string name="movie_image_description">Movie Image</string>
+    <string name="success_image_description">Success Image</string>
+    <string name="error_image_description">Error Image</string>
+    <string name="empty_image_description">Empty Image</string>
+    <string name="confirmation_image_description">Confirmation Image</string>
+    <string name="full_star_icon_description">Full Star</string>
+    <string name="half_star_icon_description">Half Star</string>
+    <string name="empty_star_icon_description">Empty Star</string>
+
+    <!-- Label -->
+    <string name="email_label">Email</string>
+    <string name="password_label">Password</string>
+    <string name="profile_label">Profile</string>
+    <string name="settings_label">Settings</string>
+    <string name="name_label">Name</string>
+    <string name="phone_number_label">Phone Number</string>
+    <string name="date_of_birth_label">Date of Birth</string>
+    <string name="release_date_label">Release Date</string>
+    <string name="rating_label">Rating</string>
+    <string name="genre_label">Genre</string>
+
+    <!-- Error -->
     <string name="error_email">Invalid email format</string>
     <string name="error_password">Password must be at least 8 characters</string>
-    <string name="login">Login</string>
-    <string name="release_date">Release Date</string>
-    <string name="rating">Rating</string>
-    <string name="genre">Genre</string>
+    <string name="name_error">Name is required</string>
+    <string name="phone_number_error">Please input a valid phone number</string>
+    <string name="date_of_birth_error">Please input a valid date of birth (dd-mm-yyyy)</string>
+
+    <!-- Action -->
+    <string name="login_action">Login</string>
+    <string name="edit_profile_action">Edit Profile</string>
+    <string name="logout_action">Logout</string>
+    <string name="submit_action">Submit</string>
 </resources>
