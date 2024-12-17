@@ -33,11 +33,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import cmp_movie.composeapp.generated.resources.Res
 import cmp_movie.composeapp.generated.resources.back
-import cmp_movie.composeapp.generated.resources.date_of_birth_error
 import cmp_movie.composeapp.generated.resources.date_of_birth_label
 import cmp_movie.composeapp.generated.resources.email_label
 import cmp_movie.composeapp.generated.resources.ic_back
+import cmp_movie.composeapp.generated.resources.ic_calendar
 import cmp_movie.composeapp.generated.resources.ic_user_setting
+import cmp_movie.composeapp.generated.resources.invalid_date_error
 import cmp_movie.composeapp.generated.resources.name_error
 import cmp_movie.composeapp.generated.resources.name_label
 import cmp_movie.composeapp.generated.resources.phone_number_error
@@ -46,8 +47,10 @@ import cmp_movie.composeapp.generated.resources.profile_label
 import cmp_movie.composeapp.generated.resources.settings_label
 import cmp_movie.composeapp.generated.resources.submit_action
 import fd.cmp.movie.data.model.User
+import fd.cmp.movie.helper.DateHelper
 import fd.cmp.movie.helper.TextHelper
 import fd.cmp.movie.helper.UiHelper
+import fd.cmp.movie.screen.common.BottomSheetDatePicker
 import fd.cmp.movie.screen.common.ConfirmationBottomSheet
 import fd.cmp.movie.screen.common.ErrorBottomSheetDialog
 import fd.cmp.movie.screen.common.ErrorScreen
@@ -167,6 +170,7 @@ fun UserDetailContent(
     var name by remember { mutableStateOf(user.name) }
     var phone by remember { mutableStateOf(user.phone) }
     var dateOfBirth by remember { mutableStateOf(user.dateOfBirth) }
+    var showDatePicker by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -251,20 +255,39 @@ fun UserDetailContent(
                 dateOfBirth = it
                 viewModel.dateOfBirthError = !TextHelper.isValidDate(it)
             },
-            readOnly = !viewModel.isEdit,
+            readOnly = true,
             label = { Text(stringResource(Res.string.date_of_birth_label)) },
             isError = viewModel.dateOfBirthError,
             singleLine = true,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(8.dp)
+                .padding(8.dp),
+            trailingIcon = {
+                if (viewModel.isEdit) {
+                    IconButton(onClick = { showDatePicker = true }) {
+                        Icon(
+                            painter = painterResource(Res.drawable.ic_calendar),
+                            contentDescription = stringResource(Res.string.date_of_birth_label)
+                        )
+                    }
+                }
+            }
         )
         if (viewModel.dateOfBirthError) {
             Text(
-                text = stringResource(Res.string.date_of_birth_error),
+                text = stringResource(Res.string.invalid_date_error),
                 color = Color.Red,
                 style = MaterialTheme.typography.bodySmall,
                 modifier = Modifier.padding(horizontal = 8.dp)
+            )
+        }
+        if (showDatePicker) {
+            BottomSheetDatePicker(
+                initialDate = DateHelper.formatDate(dateOfBirth),
+                onDateSelected = { date ->
+                    dateOfBirth = DateHelper.formatDate(date)
+                },
+                onDismiss = { showDatePicker = false }
             )
         }
     }

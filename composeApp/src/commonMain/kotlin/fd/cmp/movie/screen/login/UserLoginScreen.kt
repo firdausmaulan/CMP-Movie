@@ -27,12 +27,12 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import cmp_movie.composeapp.generated.resources.Res
+import cmp_movie.composeapp.generated.resources.email_error
 import cmp_movie.composeapp.generated.resources.email_label
-import cmp_movie.composeapp.generated.resources.error_email
-import cmp_movie.composeapp.generated.resources.error_password
 import cmp_movie.composeapp.generated.resources.ic_visible
 import cmp_movie.composeapp.generated.resources.ic_visible_off
 import cmp_movie.composeapp.generated.resources.login_action
+import cmp_movie.composeapp.generated.resources.password_error
 import cmp_movie.composeapp.generated.resources.password_label
 import fd.cmp.movie.data.remote.request.UserLoginRequest
 import fd.cmp.movie.helper.TextHelper
@@ -93,7 +93,7 @@ fun UserLoginScreen(
                 )
                 if (viewModel.emailError) {
                     Text(
-                        text = stringResource(Res.string.error_email),
+                        text = stringResource(Res.string.email_error),
                         color = Color.Red,
                         style = MaterialTheme.typography.bodySmall,
                         modifier = Modifier
@@ -130,7 +130,7 @@ fun UserLoginScreen(
                 )
                 if (viewModel.passwordError) {
                     Text(
-                        text = stringResource(Res.string.error_password),
+                        text = stringResource(Res.string.password_error),
                         color = Color.Red,
                         style = MaterialTheme.typography.bodySmall,
                         modifier = Modifier
