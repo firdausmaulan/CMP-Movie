@@ -68,6 +68,7 @@ kotlin {
             implementation(libs.koin.compose.viewmodel)
             implementation(libs.navigation.compose)
             implementation(libs.multiplatform.settings)
+            implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.6.1")
         }
     }
 }

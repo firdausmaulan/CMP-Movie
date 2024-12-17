@@ -19,6 +19,8 @@
     <!-- General Error Messages -->
     <string name="error_message">Oops... Something went wrong</string>
     <string name="error_sub_message">Please try again later</string>
+    <!-- General Date Picker -->
+    <string name="day_names_label">SMTWTFS</string>
 
     <!-- General Content Description -->
     <string name="search_icon_description">Search Icon</string>
@@ -35,6 +37,8 @@
     <string name="full_star_icon_description">Full Star</string>
     <string name="half_star_icon_description">Half Star</string>
     <string name="empty_star_icon_description">Empty Star</string>
+    <string name="prev_icon_description">Previous</string>
+    <string name="next_icon_description">Next</string>"
 
     <!-- Label -->
     <string name="email_label">Email</string>
@@ -49,15 +53,19 @@
     <string name="genre_label">Genre</string>
 
     <!-- Error -->
-    <string name="error_email">Invalid email format</string>
-    <string name="error_password">Password must be at least 8 characters</string>
+    <string name="email_error">Invalid email format</string>
+    <string name="password_error">Password must be at least 8 characters</string>
     <string name="name_error">Name is required</string>
     <string name="phone_number_error">Please input a valid phone number</string>
-    <string name="date_of_birth_error">Please input a valid date of birth (dd-mm-yyyy)</string>
+    <string name="invalid_date_error">Please select a valid date</string>
 
     <!-- Action -->
     <string name="login_action">Login</string>
     <string name="edit_profile_action">Edit Profile</string>
     <string name="logout_action">Logout</string>
     <string name="submit_action">Submit</string>
+    <string name="cancel_action">Cancel</string>
+    <string name="confirm_action">Confirm</string>
+    <string name="save_action">Save</string>
+    <string name="delete_action">Delete</string>
 </resources>
