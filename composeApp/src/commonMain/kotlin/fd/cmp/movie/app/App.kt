@@ -12,6 +12,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import fd.cmp.movie.screen.detail.MovieDetailScreen
 import fd.cmp.movie.screen.list.MovieListScreen
+import fd.cmp.movie.screen.location.LocationScreen
 import fd.cmp.movie.screen.login.UserLoginScreen
 import fd.cmp.movie.screen.user.UserScreen
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -51,8 +52,14 @@ fun App() {
                         }
                     )
                 }
-                composable<Route.User> {
+                composable<Route.User> { backStackEntry ->
+                    // Retrieve result from saved state handle when returning
+                    val locationResult = backStackEntry.savedStateHandle.get<String?>(Keys.LOCATION_RESULT)
                     UserScreen(
+                        locationResult = locationResult,
+                        onEditLocation = {
+                            navController.navigate(Route.Location)
+                        },
                         navigateBack = {
                             navController.popBackStack()
                         },
@@ -60,6 +67,20 @@ fun App() {
                             navController.navigate(Route.Login) {
                                 popUpTo(Route.MovieList) { inclusive = true }
                             }
+                        }
+                    )
+                }
+                composable<Route.Location> {
+                    LocationScreen(
+                        onClose = {
+                            navController.popBackStack()
+                        },
+                        onConfirm = { result ->
+                            // Save the result before popping back
+                            navController.previousBackStackEntry
+                                ?.savedStateHandle
+                                ?.set(Keys.LOCATION_RESULT, result)
+                            navController.popBackStack()
                         }
                     )
                 }

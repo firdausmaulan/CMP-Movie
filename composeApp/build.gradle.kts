@@ -69,6 +69,8 @@ kotlin {
             implementation(libs.navigation.compose)
             implementation(libs.multiplatform.settings)
             implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.6.1")
+            implementation("io.github.the-best-is-best:kgoogle-map:1.0.1-rc5")
+            implementation("io.github.the-best-is-best:klocation:1.0.5")
         }
     }
 }
