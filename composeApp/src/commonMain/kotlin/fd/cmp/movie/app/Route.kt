@@ -16,5 +16,8 @@ sealed interface Route {
     object User : Route
 
     @Serializable
-    object Location : Route
+    data class Location(val locationData : String?) : Route
+
+    @Serializable
+    object Photo : Route
 }

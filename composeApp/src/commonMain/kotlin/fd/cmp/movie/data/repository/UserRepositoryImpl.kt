@@ -6,6 +6,7 @@ import fd.cmp.movie.data.model.User
 import fd.cmp.movie.data.remote.api.core.ApiResponse
 import fd.cmp.movie.data.remote.api.service.UserApiService
 import fd.cmp.movie.data.remote.request.UserLoginRequest
+import fd.cmp.movie.data.remote.response.PhotoResponse
 import fd.cmp.movie.data.remote.response.UserLoginResponse
 
 class UserRepositoryImpl(
@@ -16,6 +17,10 @@ class UserRepositoryImpl(
 
     override suspend fun login(request: UserLoginRequest): ApiResponse<UserLoginResponse> {
         return apiService.login(request)
+    }
+
+    override suspend fun uploadPhoto(photo: ByteArray?): ApiResponse<PhotoResponse> {
+        return apiService.uploadPhoto(photo)
     }
 
     override suspend fun insertUser(user: User?) {

@@ -25,7 +25,7 @@ data class User(
     @SerialName("imagePath")
     var imagePath: String?,
     @SerialName("imageUrl")
-    val imageUrl: String? = Constants.BASE_USER_URL + imagePath,
+    var imageUrl: String? = Constants.BASE_USER_URL + imagePath,
     @SerialName("token")
     val token: String? = null
 )

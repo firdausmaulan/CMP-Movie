@@ -40,6 +40,7 @@ import org.koin.compose.viewmodel.koinViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LocationScreen(
+    locationData: String?,
     onClose: () -> Unit,
     onConfirm: (locationData: String?) -> Unit
 ) {
@@ -59,6 +60,9 @@ fun LocationScreen(
         } else {
             viewModel.enableGPSAndLocation()
         }*/
+        if (locationData != null) {
+            viewModel.initLocation(LocationData.fromJson(locationData))
+        }
     }
 
     Scaffold(topBar = {
@@ -94,8 +98,7 @@ fun LocationScreen(
         ) {
 
             MapScreen(
-                viewModel.latitude,
-                viewModel.longitude,
+                viewModel.locationData,
                 mapModifier = Modifier.fillMaxSize(),
             )
 
@@ -147,7 +150,6 @@ fun LocationScreen(
                     Button(
                         onClick = {
                             viewModel.selectedLocation?.let {
-                                println("confirm : ${LocationData.toJson(it)}")
                                 onConfirm(LocationData.toJson(it))
                             }
                         },

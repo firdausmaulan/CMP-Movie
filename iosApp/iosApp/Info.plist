@@ -46,5 +46,11 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSLocationWhenInUseUsageDescription</key>
+    <string>This app needs access to your location to display your current position on the map.</string>
+    <key>NSCameraUsageDescription</key>
+    <string>This app uses the camera to capture your profile photo for upload.</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>This app needs access to your photos to allow you to select and upload images.</string>
 </dict>
 </plist>

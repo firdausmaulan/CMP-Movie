@@ -22,9 +22,10 @@ import kotlin.coroutines.resume
 open class KLocationViewModel(private val locationService: LocationService) : ViewModel() {
 
     var selectedLocation: LocationData? = null
+
+    var locationData by mutableStateOf<LocationData?>(null)
+
     var address by mutableStateOf("")
-    var latitude by mutableDoubleStateOf(Constants.DEFAULT_LATITUDE)
-    var longitude by mutableDoubleStateOf(Constants.DEFAULT_LONGITUDE)
 
     private val googlePlaces = KPlacesHelper()
 
@@ -50,9 +51,20 @@ open class KLocationViewModel(private val locationService: LocationService) : Vi
     fun getCurrentLocation() {
         viewModelScope.launch {
             val location = kLocationService.getCurrentLocation()
-            latitude = location.latitude
-            longitude = location.longitude
-            address = locationService.getLocationName(latitude, longitude).addressLine.toString()
+            address = locationService.getLocationName(location.latitude, location.longitude).addressLine.toString()
+            locationData = LocationData(
+                latitude = location.latitude,
+                longitude = location.longitude,
+                displayName = address
+            )
+        }
+    }
+
+    fun initLocation(initialLocation: LocationData) {
+        viewModelScope.launch {
+            kotlinx.coroutines.delay(1000)
+            address = initialLocation.displayName.toString()
+            locationData = initialLocation
         }
     }
 

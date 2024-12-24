@@ -16,6 +16,7 @@ import fd.cmp.movie.screen.list.MovieListViewModel
 import fd.cmp.movie.screen.location.LocationViewModel
 import fd.cmp.movie.screen.login.UserLoginViewModel
 import fd.cmp.movie.screen.user.UserViewModel
+import fd.cmp.movie.screen.photo.PhotoViewModel
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.logging.LogLevel
@@ -64,6 +65,7 @@ val viewModelModule = module {
     factoryOf(::UserLoginViewModel)
     factoryOf(::UserViewModel)
     factoryOf(::LocationViewModel)
+    factoryOf(::PhotoViewModel)
 }
 
 fun initKoin() {
