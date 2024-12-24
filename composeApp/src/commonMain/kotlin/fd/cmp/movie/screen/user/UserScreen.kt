@@ -1,5 +1,7 @@
 package fd.cmp.movie.screen.user
 
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -19,6 +21,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -56,6 +59,7 @@ import fd.cmp.movie.screen.common.ErrorBottomSheetDialog
 import fd.cmp.movie.screen.common.ErrorScreen
 import fd.cmp.movie.screen.common.LoadingButton
 import fd.cmp.movie.screen.common.LoadingScreen
+import fd.cmp.movie.screen.common.MapScreen
 import fd.cmp.movie.screen.common.NetworkImage
 import fd.cmp.movie.screen.common.SuccessBottomSheetDialog
 import fd.cmp.movie.screen.common.UserSettingBottomSheet
@@ -66,7 +70,9 @@ import org.koin.compose.viewmodel.koinViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UserScreen(
+    locationResult: String?,
     navigateBack: () -> Unit,
+    onEditLocation: () -> Unit,
     onLogout: () -> Unit
 ) {
 
@@ -74,6 +80,10 @@ fun UserScreen(
 
     var showBottomSheetSetting by remember { mutableStateOf(false) }
     var showBottomSheetConfirmation by remember { mutableStateOf(false) }
+
+    LaunchedEffect(locationResult) {
+        viewModel.setLocation(locationResult)
+    }
 
     Scaffold(
         topBar = {
@@ -109,7 +119,7 @@ fun UserScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .padding(16.dp),
+                .padding(horizontal = 16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             when (val state = viewModel.state) {
@@ -125,6 +135,7 @@ fun UserScreen(
                     UserDetailContent(
                         user = state.user,
                         viewModel = viewModel,
+                        onEditLocation = onEditLocation
                     )
                 }
             }
@@ -165,6 +176,7 @@ fun UserScreen(
 fun UserDetailContent(
     user: User,
     viewModel: UserViewModel,
+    onEditLocation: () -> Unit
 ) {
 
     var name by remember { mutableStateOf(user.name) }
@@ -290,33 +302,89 @@ fun UserDetailContent(
                 onDismiss = { showDatePicker = false }
             )
         }
-    }
 
-    when (val state = viewModel.stateEdit) {
-        is UserEditState.Idle -> {
-            if (viewModel.isEdit) {
-                user.name = name
-                user.phone = phone
-                user.dateOfBirth = dateOfBirth
-                SubmitButton(viewModel, user)
+        OutlinedTextField(
+            colors = UiHelper.textFieldCustomColors(),
+            value = viewModel.address,
+            onValueChange = {},
+            readOnly = true,
+            label = { Text("Address") },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp)
+        )
+
+        MapBox(
+            viewModel.latitude,
+            viewModel.longitude,
+            viewModel.isEdit,
+            onEditLocation = onEditLocation
+        )
+
+        when (val state = viewModel.stateEdit) {
+            is UserEditState.Idle -> {
+                if (viewModel.isEdit) {
+                    user.name = name
+                    user.phone = phone
+                    user.dateOfBirth = dateOfBirth
+                    SubmitButton(viewModel, user)
+                }
+            }
+
+            is UserEditState.Loading -> LoadingButton()
+
+            is UserEditState.Error -> {
+                ErrorBottomSheetDialog(
+                    onDismissRequest = {
+                        viewModel.stateEdit = UserEditState.Idle
+                    },
+                    subMessage = state.message
+                )
+            }
+
+            is UserEditState.Success -> {
+                SuccessBottomSheetDialog(onDismissRequest = {
+                    viewModel.isEdit = false
+                    viewModel.stateEdit = UserEditState.Idle
+                })
             }
         }
+    }
+}
 
-        is UserEditState.Loading -> LoadingButton()
-        is UserEditState.Error -> {
-            ErrorBottomSheetDialog(
-                onDismissRequest = {
-                    viewModel.stateEdit = UserEditState.Idle
-                },
-                subMessage = state.message
+@Composable
+fun MapBox(
+    latitude : Double?,
+    longitude : Double?,
+    isEdit : Boolean,
+    onEditLocation: () -> Unit
+) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp)
+            .border(
+                width = 1.dp,
+                color = MaterialTheme.colorScheme.primary,
+                shape = MaterialTheme.shapes.small
             )
-        }
+            .clip(MaterialTheme.shapes.small)
+    ) {
+        // Display the map view
+        MapScreen(latitude, longitude)
 
-        is UserEditState.Success -> {
-            SuccessBottomSheetDialog(onDismissRequest = {
-                viewModel.isEdit = false
-                viewModel.stateEdit = UserEditState.Idle
-            })
+        if (isEdit) {
+            // Edit button
+            Button(
+                onClick = {
+                    onEditLocation()
+                },
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .padding(8.dp)
+            ) {
+                Text(text = "Edit")
+            }
         }
     }
 }

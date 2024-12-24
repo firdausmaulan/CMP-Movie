@@ -14,4 +14,7 @@ sealed interface Route {
 
     @Serializable
     object User : Route
+
+    @Serializable
+    object Location : Route
 }

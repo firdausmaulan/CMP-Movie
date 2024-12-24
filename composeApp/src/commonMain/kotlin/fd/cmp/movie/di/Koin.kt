@@ -1,8 +1,9 @@
 package fd.cmp.movie.di
 
-import fd.cmp.movie.data.local.keyval.AppSettings
 import fd.cmp.movie.data.local.db.service.UserDbService
+import fd.cmp.movie.data.local.keyval.AppSettings
 import fd.cmp.movie.data.local.keyval.providePlatformSettings
+import fd.cmp.movie.data.location.provideLocationService
 import fd.cmp.movie.data.remote.api.core.AppHttpClient
 import fd.cmp.movie.data.remote.api.service.MovieApiService
 import fd.cmp.movie.data.remote.api.service.UserApiService
@@ -12,6 +13,7 @@ import fd.cmp.movie.data.repository.UserRepository
 import fd.cmp.movie.data.repository.UserRepositoryImpl
 import fd.cmp.movie.screen.detail.MovieDetailViewModel
 import fd.cmp.movie.screen.list.MovieListViewModel
+import fd.cmp.movie.screen.location.LocationViewModel
 import fd.cmp.movie.screen.login.UserLoginViewModel
 import fd.cmp.movie.screen.user.UserViewModel
 import io.ktor.client.HttpClient
@@ -52,6 +54,8 @@ val dataModule = module {
     single { UserApiService(get()) }
     single { UserDbService() }
     single<UserRepository> { UserRepositoryImpl(get(), get(), get()) }
+
+    single { provideLocationService() }
 }
 
 val viewModelModule = module {
@@ -59,6 +63,7 @@ val viewModelModule = module {
     factoryOf(::MovieDetailViewModel)
     factoryOf(::UserLoginViewModel)
     factoryOf(::UserViewModel)
+    factoryOf(::LocationViewModel)
 }
 
 fun initKoin() {

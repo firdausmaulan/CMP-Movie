@@ -5,8 +5,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import fd.cmp.movie.data.model.LocationData
 import fd.cmp.movie.data.model.User
 import fd.cmp.movie.data.repository.UserRepository
+import fd.cmp.movie.helper.Constants
 import fd.cmp.movie.helper.TextHelper
 import kotlinx.coroutines.launch
 
@@ -28,6 +30,12 @@ class UserViewModel(
 
     var dateOfBirthError by mutableStateOf(false)
 
+    var address by mutableStateOf("")
+
+    var latitude by mutableStateOf<Double?>(Constants.DEFAULT_LATITUDE)
+
+    var longitude by mutableStateOf<Double?>(Constants.DEFAULT_LONGITUDE)
+
     init {
         fetchUserDetail()
     }
@@ -41,10 +49,21 @@ class UserViewModel(
                     state = UserDetailState.Error(result.exceptionOrNull()?.message ?: "Unknown error")
                     return@launch
                 }
+                kotlinx.coroutines.delay(1000)
                 user?.let { state = UserDetailState.Success(it) }
+                user?.let { updateLocation(it) }
             } else if (result.isFailure) {
                 state = UserDetailState.Error(result.exceptionOrNull()?.message ?: "Unknown error")
             }
+        }
+    }
+
+    private fun updateLocation(user: User) {
+        viewModelScope.launch {
+            kotlinx.coroutines.delay(1000)
+            latitude = user.latitude
+            longitude = user.longitude
+            address = user.address.toString()
         }
     }
 
@@ -65,6 +84,17 @@ class UserViewModel(
             userRepository.editUser(user)
             stateEdit = UserEditState.Success(user)
         }
+    }
+
+    fun setLocation(locationResult: String?) {
+        if (locationResult == null || user == null) return
+        val location = LocationData.fromJson(locationResult)
+        if (location.latitude == null || location.longitude == null) return
+        if (location.latitude == Constants.DEFAULT_LATITUDE && location.longitude == Constants.DEFAULT_LONGITUDE) return
+        user?.latitude = location.latitude
+        user?.longitude = location.longitude
+        user?.address = location.displayName
+        user?.let { updateLocation(it) }
     }
 
     fun logout() {
