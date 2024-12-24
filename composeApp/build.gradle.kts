@@ -71,6 +71,9 @@ kotlin {
             implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.6.1")
             implementation("io.github.the-best-is-best:kgoogle-map:1.0.1-rc5")
             implementation("io.github.the-best-is-best:klocation:1.0.5")
+            implementation("io.github.onseok:peekaboo-ui:0.5.2")
+            implementation("io.github.onseok:peekaboo-image-picker:0.5.2")
+            implementation("id.feinn.azisanw19:feinn-permission:1.0.0-alpha05")
         }
     }
 }

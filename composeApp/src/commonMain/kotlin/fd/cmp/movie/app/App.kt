@@ -14,6 +14,7 @@ import fd.cmp.movie.screen.detail.MovieDetailScreen
 import fd.cmp.movie.screen.list.MovieListScreen
 import fd.cmp.movie.screen.location.LocationScreen
 import fd.cmp.movie.screen.login.UserLoginScreen
+import fd.cmp.movie.screen.photo.PhotoScreen
 import fd.cmp.movie.screen.user.UserScreen
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -55,13 +56,18 @@ fun App() {
                 composable<Route.User> { backStackEntry ->
                     // Retrieve result from saved state handle when returning
                     val locationResult = backStackEntry.savedStateHandle.get<String?>(Keys.LOCATION_RESULT)
+                    val imageResult = backStackEntry.savedStateHandle.get<String?>(Keys.IMAGE_RESULT)
                     UserScreen(
                         locationResult = locationResult,
-                        onEditLocation = {
-                            navController.navigate(Route.Location)
-                        },
+                        imageResult = imageResult,
                         navigateBack = {
                             navController.popBackStack()
+                        },
+                        onEditPhoto = {
+                            navController.navigate(Route.Photo)
+                        },
+                        onEditLocation = {
+                            navController.navigate(Route.Location(it))
                         },
                         onLogout = {
                             navController.navigate(Route.Login) {
@@ -70,8 +76,9 @@ fun App() {
                         }
                     )
                 }
-                composable<Route.Location> {
+                composable<Route.Location> { backStackEntry ->
                     LocationScreen(
+                        locationData = backStackEntry.toRoute<Route.Location>().locationData,
                         onClose = {
                             navController.popBackStack()
                         },
@@ -80,6 +87,20 @@ fun App() {
                             navController.previousBackStackEntry
                                 ?.savedStateHandle
                                 ?.set(Keys.LOCATION_RESULT, result)
+                            navController.popBackStack()
+                        }
+                    )
+                }
+                composable<Route.Photo> {
+                    PhotoScreen(
+                        onClose = {
+                            navController.popBackStack()
+                        },
+                        onSuccessUpload = { result ->
+                            // Save the result before popping back
+                            navController.previousBackStackEntry
+                                ?.savedStateHandle
+                                ?.set(Keys.IMAGE_RESULT, result)
                             navController.popBackStack()
                         }
                     )

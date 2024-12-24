@@ -1,12 +1,16 @@
 package fd.cmp.movie.screen.user
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -40,6 +44,7 @@ import cmp_movie.composeapp.generated.resources.date_of_birth_label
 import cmp_movie.composeapp.generated.resources.email_label
 import cmp_movie.composeapp.generated.resources.ic_back
 import cmp_movie.composeapp.generated.resources.ic_calendar
+import cmp_movie.composeapp.generated.resources.ic_edit_photo
 import cmp_movie.composeapp.generated.resources.ic_user_setting
 import cmp_movie.composeapp.generated.resources.invalid_date_error
 import cmp_movie.composeapp.generated.resources.name_error
@@ -49,6 +54,7 @@ import cmp_movie.composeapp.generated.resources.phone_number_label
 import cmp_movie.composeapp.generated.resources.profile_label
 import cmp_movie.composeapp.generated.resources.settings_label
 import cmp_movie.composeapp.generated.resources.submit_action
+import fd.cmp.movie.data.model.LocationData
 import fd.cmp.movie.data.model.User
 import fd.cmp.movie.helper.DateHelper
 import fd.cmp.movie.helper.TextHelper
@@ -63,6 +69,10 @@ import fd.cmp.movie.screen.common.MapScreen
 import fd.cmp.movie.screen.common.NetworkImage
 import fd.cmp.movie.screen.common.SuccessBottomSheetDialog
 import fd.cmp.movie.screen.common.UserSettingBottomSheet
+import id.feinn.utility.permission.FeinnPermissionState
+import id.feinn.utility.permission.FeinnPermissionType
+import id.feinn.utility.permission.isGranted
+import id.feinn.utility.permission.rememberFeinnPermissionState
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
@@ -71,8 +81,10 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun UserScreen(
     locationResult: String?,
+    imageResult: String?,
     navigateBack: () -> Unit,
-    onEditLocation: () -> Unit,
+    onEditPhoto: () -> Unit,
+    onEditLocation: (locationData: String?) -> Unit,
     onLogout: () -> Unit
 ) {
 
@@ -80,9 +92,16 @@ fun UserScreen(
 
     var showBottomSheetSetting by remember { mutableStateOf(false) }
     var showBottomSheetConfirmation by remember { mutableStateOf(false) }
+    val permissionCamera = rememberFeinnPermissionState(
+        permission = FeinnPermissionType.Camera,
+        onPermissionResult = {
+            onEditPhoto()
+        }
+    )
 
-    LaunchedEffect(locationResult) {
-        viewModel.setLocation(locationResult)
+    LaunchedEffect(Unit) {
+        viewModel.updateLocation(locationResult)
+        viewModel.updateImage(imageResult)
     }
 
     Scaffold(
@@ -135,7 +154,16 @@ fun UserScreen(
                     UserDetailContent(
                         user = state.user,
                         viewModel = viewModel,
-                        onEditLocation = onEditLocation
+                        permissionCamera = permissionCamera,
+                        onEditPhoto = onEditPhoto,
+                        onEditLocation = {
+                            val locationData = LocationData(
+                                latitude = viewModel.user?.latitude,
+                                longitude = viewModel.user?.longitude,
+                                displayName = viewModel.address
+                            )
+                            onEditLocation(LocationData.toJson(locationData))
+                        }
                     )
                 }
             }
@@ -176,6 +204,8 @@ fun UserScreen(
 fun UserDetailContent(
     user: User,
     viewModel: UserViewModel,
+    permissionCamera: FeinnPermissionState,
+    onEditPhoto: () -> Unit,
     onEditLocation: () -> Unit
 ) {
 
@@ -190,14 +220,14 @@ fun UserDetailContent(
             .verticalScroll(state = rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        NetworkImage(
-            imageUrl = user.imageUrl,
-            modifier = Modifier
-                .height(120.dp)
-                .width(120.dp)
-                .padding(8.dp)
-                .clip(CircleShape),
-            contentScale = ContentScale.Crop,
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        CircleAvatar(
+            imageUrl = viewModel.imageUrl,
+            isEdit = viewModel.isEdit,
+            onEditPhoto = onEditPhoto,
+            permissionCamera = permissionCamera,
         )
 
         OutlinedTextField(
@@ -315,10 +345,9 @@ fun UserDetailContent(
         )
 
         MapBox(
-            viewModel.latitude,
-            viewModel.longitude,
+            viewModel.locationData,
             viewModel.isEdit,
-            onEditLocation = onEditLocation
+            onEditLocation
         )
 
         when (val state = viewModel.stateEdit) {
@@ -343,20 +372,64 @@ fun UserDetailContent(
             }
 
             is UserEditState.Success -> {
-                SuccessBottomSheetDialog(onDismissRequest = {
-                    viewModel.isEdit = false
-                    viewModel.stateEdit = UserEditState.Idle
-                })
+                SuccessBottomSheetDialog(
+                    onDismissRequest = {
+                        viewModel.isEdit = false
+                        viewModel.stateEdit = UserEditState.Idle
+                    },
+                    onButtonClick = {
+                        viewModel.isEdit = false
+                        viewModel.stateEdit = UserEditState.Idle
+                    }
+                )
             }
+        }
+
+        Spacer(modifier = Modifier.height(8.dp))
+    }
+}
+
+@Composable
+fun CircleAvatar(
+    imageUrl: String?,
+    isEdit: Boolean,
+    onEditPhoto: () -> Unit,
+    permissionCamera: FeinnPermissionState
+) {
+    Box {
+        NetworkImage(
+            imageUrl = imageUrl,
+            modifier = Modifier
+                .height(120.dp)
+                .width(120.dp)
+                .padding(8.dp)
+                .border(2.dp, Color.Black, CircleShape)
+                .clip(CircleShape)
+                .clickable {
+                    if (permissionCamera.status.isGranted) {
+                        onEditPhoto()
+                    } else {
+                        permissionCamera.launchPermissionRequest()
+                    }
+                },
+            contentScale = ContentScale.Crop,
+        )
+        if (isEdit) {
+            Image(
+                painter = painterResource(Res.drawable.ic_edit_photo),
+                contentDescription = "Edit",
+                modifier = Modifier
+                    .size(32.dp)
+                    .align(Alignment.BottomCenter)
+            )
         }
     }
 }
 
 @Composable
 fun MapBox(
-    latitude : Double?,
-    longitude : Double?,
-    isEdit : Boolean,
+    locationData: LocationData?,
+    isEdit: Boolean,
     onEditLocation: () -> Unit
 ) {
     Box(
@@ -371,7 +444,7 @@ fun MapBox(
             .clip(MaterialTheme.shapes.small)
     ) {
         // Display the map view
-        MapScreen(latitude, longitude)
+        MapScreen(locationData)
 
         if (isEdit) {
             // Edit button

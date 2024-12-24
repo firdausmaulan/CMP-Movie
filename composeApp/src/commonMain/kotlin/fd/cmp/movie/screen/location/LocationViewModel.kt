@@ -35,15 +35,18 @@ class LocationViewModel(locationService: LocationService) : KLocationViewModel(l
                 return@launch
             }
             address = details.address.toString()
-            latitude = details.latitude ?: 0.0
-            longitude = details.longitude ?: 0.0
+            locationData = LocationData(
+                latitude = details.latitude,
+                longitude = details.longitude,
+                displayName = address
+            )
             val finalLocation = LocationData(
                 placeId = location.placeId,
                 primaryText = location.primaryText,
                 fullText = location.fullText,
                 displayName = address,
-                latitude = latitude,
-                longitude = longitude
+                latitude = details.latitude,
+                longitude = details.longitude,
             )
             selectedLocation = finalLocation
             LocationState.Update

@@ -32,9 +32,9 @@ class UserViewModel(
 
     var address by mutableStateOf("")
 
-    var latitude by mutableStateOf<Double?>(Constants.DEFAULT_LATITUDE)
+    var locationData by mutableStateOf<LocationData?>(null)
 
-    var longitude by mutableStateOf<Double?>(Constants.DEFAULT_LONGITUDE)
+    var imageUrl by mutableStateOf("")
 
     init {
         fetchUserDetail()
@@ -51,26 +51,24 @@ class UserViewModel(
                 }
                 kotlinx.coroutines.delay(1000)
                 user?.let { state = UserDetailState.Success(it) }
-                user?.let { updateLocation(it) }
+                imageUrl = user?.imageUrl.toString()
+                address = user?.address.toString()
+                locationData = LocationData(
+                    latitude = user?.latitude,
+                    longitude = user?.longitude,
+                    displayName = user?.address
+                )
             } else if (result.isFailure) {
                 state = UserDetailState.Error(result.exceptionOrNull()?.message ?: "Unknown error")
             }
         }
     }
 
-    private fun updateLocation(user: User) {
-        viewModelScope.launch {
-            kotlinx.coroutines.delay(1000)
-            latitude = user.latitude
-            longitude = user.longitude
-            address = user.address.toString()
-        }
-    }
-
     private fun isValidRequest(): Boolean {
         nameError = user?.name.isNullOrEmpty()
         phoneError = user?.phone.isNullOrEmpty() || !TextHelper.isValidPhoneNumber(user?.phone)
-        dateOfBirthError = user?.dateOfBirth.isNullOrEmpty() || !TextHelper.isValidDate(user?.dateOfBirth)
+        dateOfBirthError =
+            user?.dateOfBirth.isNullOrEmpty() || !TextHelper.isValidDate(user?.dateOfBirth)
         return !nameError && !phoneError && !dateOfBirthError
     }
 
@@ -86,15 +84,30 @@ class UserViewModel(
         }
     }
 
-    fun setLocation(locationResult: String?) {
+    fun updateLocation(locationResult: String?) {
         if (locationResult == null || user == null) return
         val location = LocationData.fromJson(locationResult)
         if (location.latitude == null || location.longitude == null) return
         if (location.latitude == Constants.DEFAULT_LATITUDE && location.longitude == Constants.DEFAULT_LONGITUDE) return
-        user?.latitude = location.latitude
-        user?.longitude = location.longitude
-        user?.address = location.displayName
-        user?.let { updateLocation(it) }
+        viewModelScope.launch {
+            user?.latitude = location.latitude
+            user?.longitude = location.longitude
+            user?.address = location.displayName
+            kotlinx.coroutines.delay(1000)
+            address = location.displayName.toString()
+            locationData = LocationData(
+                latitude = location.latitude,
+                longitude = location.longitude,
+                displayName = location.displayName
+            )
+        }
+    }
+
+    fun updateImage(imagePath: String?) {
+        if (imagePath == null || user == null) return
+        imageUrl = Constants.BASE_USER_URL + imagePath
+        user?.imagePath = imagePath
+        user?.imageUrl = imageUrl
     }
 
     fun logout() {

@@ -19,6 +19,9 @@
     <!-- General Error Messages -->
     <string name="error_message">Oops... Something went wrong</string>
     <string name="error_sub_message">Please try again later</string>
+    <!-- General Loading Message -->
+    <string name="loading_message">Loading</string>
+    <string name="loading_sub_message">Please wait...</string>
     <!-- General Date Picker -->
     <string name="day_names_label">SMTWTFS</string>
 
@@ -32,6 +35,7 @@
     <string name="movie_image_description">Movie Image</string>
     <string name="success_image_description">Success Image</string>
     <string name="error_image_description">Error Image</string>
+    <string name="loading_image_description">Loading Image</string>
     <string name="empty_image_description">Empty Image</string>
     <string name="confirmation_image_description">Confirmation Image</string>
     <string name="full_star_icon_description">Full Star</string>
