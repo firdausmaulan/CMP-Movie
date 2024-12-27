@@ -1,6 +1,5 @@
 package fd.cmp.movie.screen.common
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
@@ -15,7 +14,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import cmp_movie.composeapp.generated.resources.Res
 import cmp_movie.composeapp.generated.resources.search_placeholder
 import fd.cmp.movie.helper.UiHelper
@@ -51,9 +49,7 @@ fun DebounceTextField(
     val debouncer = remember { Debouncer(coroutineScope, 1000L) } // 1000 milliseconds debounce time
 
     OutlinedTextField(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(Color.White),
+        modifier = Modifier.fillMaxWidth(),
         maxLines = 1,
         value = text,
         onValueChange = { newText ->

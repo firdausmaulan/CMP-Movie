@@ -17,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import cmp_movie.composeapp.generated.resources.Res
@@ -25,6 +26,7 @@ import cmp_movie.composeapp.generated.resources.error_message
 import cmp_movie.composeapp.generated.resources.error_sub_message
 import cmp_movie.composeapp.generated.resources.ic_question
 import cmp_movie.composeapp.generated.resources.ok
+import fd.cmp.movie.helper.ColorHelper
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -42,7 +44,7 @@ fun ErrorBottomSheetDialog(
 ) {
     ModalBottomSheet(
         onDismissRequest = onDismissRequest,
-        containerColor = Color.White
+        containerColor = ColorHelper.bottomSheetBackground
     ) {
         Column(
             modifier = Modifier
@@ -62,6 +64,7 @@ fun ErrorBottomSheetDialog(
             // Message
             Text(
                 text = message,
+                fontWeight = FontWeight.Bold,
                 style = MaterialTheme.typography.bodyLarge,
                 textAlign = TextAlign.Center,
                 color = Color.Black

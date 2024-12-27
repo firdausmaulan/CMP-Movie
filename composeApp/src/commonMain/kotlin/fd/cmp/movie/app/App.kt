@@ -3,13 +3,16 @@ package fd.cmp.movie.app
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import fd.cmp.movie.helper.ColorHelper
 import fd.cmp.movie.screen.detail.MovieDetailScreen
 import fd.cmp.movie.screen.list.MovieListScreen
 import fd.cmp.movie.screen.location.LocationScreen
@@ -22,7 +25,36 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Preview
 fun App() {
     MaterialTheme(
-        colorScheme = if (isSystemInDarkTheme()) lightColorScheme() else lightColorScheme()
+        colorScheme = if (isSystemInDarkTheme())
+            darkColorScheme(
+                primary = ColorHelper.primary,
+                onPrimary = ColorHelper.onPrimary,
+                secondary = ColorHelper.secondary,
+                onSecondary = ColorHelper.onSecondary,
+                tertiary = ColorHelper.tertiary,
+                onTertiary = ColorHelper.onTertiary,
+                background = ColorHelper.background,
+                onBackground = ColorHelper.onBackground,
+                surface = ColorHelper.surface,
+                onSurface = ColorHelper.onSurface,
+                error = ColorHelper.error,
+                onError = ColorHelper.onError
+            )
+        else
+            lightColorScheme(
+                primary = ColorHelper.primary,
+                onPrimary = ColorHelper.onPrimary,
+                secondary = ColorHelper.secondary,
+                onSecondary = ColorHelper.onSecondary,
+                tertiary = ColorHelper.tertiary,
+                onTertiary = ColorHelper.onTertiary,
+                background = ColorHelper.background,
+                onBackground = ColorHelper.onBackground,
+                surface = ColorHelper.surface,
+                onSurface = ColorHelper.onSurface,
+                error = ColorHelper.error,
+                onError = ColorHelper.onError
+            )
     ) {
         Surface {
             val navController: NavHostController = rememberNavController()
@@ -36,8 +68,8 @@ fun App() {
                 }
                 composable<Route.MovieList> {
                     MovieListScreen(
-                        navigateToDetails = { objectId, genres ->
-                            navController.navigate(Route.MovieDetail(objectId, genres))
+                        navigateToDetails = { movieId ->
+                            navController.navigate(Route.MovieDetail(movieId))
                         },
                         navigateToUser = {
                             navController.navigate(Route.User)
@@ -46,8 +78,7 @@ fun App() {
                 }
                 composable<Route.MovieDetail> { backStackEntry ->
                     MovieDetailScreen(
-                        movieId = backStackEntry.toRoute<Route.MovieDetail>().objectId,
-                        genres = backStackEntry.toRoute<Route.MovieDetail>().genres,
+                        movieId = backStackEntry.toRoute<Route.MovieDetail>().movieId,
                         navigateBack = {
                             navController.popBackStack()
                         }

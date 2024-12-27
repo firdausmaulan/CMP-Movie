@@ -12,16 +12,29 @@ import io.ktor.client.request.headers
 import io.ktor.client.request.parameter
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
+import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
 import io.ktor.http.Headers
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonObject
 
 open class AppHttpClient(val httpClient: HttpClient, val appSettings: AppSettings) {
 
     companion object {
         const val BASE_URL = Constants.BASE_URL
+    }
+
+    fun getErrorMessages(responseBody: String): String {
+        try {
+            val jsonObject = Json.parseToJsonElement(responseBody) as? JsonObject ?: return responseBody
+            val message = jsonObject["message"]?.toString() ?: return responseBody
+            return message
+        } catch (e: Exception) {
+            return responseBody
+        }
     }
 
     /**
@@ -50,7 +63,7 @@ open class AppHttpClient(val httpClient: HttpClient, val appSettings: AppSetting
                 HttpStatusCode.OK -> ApiResponse.Success(response.body())
                 else -> ApiResponse.Error(
                     code = response.status.value,
-                    message = response.status.description
+                    message = getErrorMessages(response.bodyAsText())
                 )
             }
         } catch (e: Exception) {
@@ -90,7 +103,7 @@ open class AppHttpClient(val httpClient: HttpClient, val appSettings: AppSetting
                 HttpStatusCode.OK, HttpStatusCode.Created -> ApiResponse.Success(response.body())
                 else -> ApiResponse.Error(
                     code = response.status.value,
-                    message = response.status.description
+                    message = getErrorMessages(response.bodyAsText())
                 )
             }
         } catch (e: Exception) {
@@ -149,7 +162,7 @@ open class AppHttpClient(val httpClient: HttpClient, val appSettings: AppSetting
                 HttpStatusCode.OK, HttpStatusCode.Created -> ApiResponse.Success(response.body())
                 else -> ApiResponse.Error(
                     code = response.status.value,
-                    message = response.status.description
+                    message = getErrorMessages(response.bodyAsText())
                 )
             }
         } catch (e: Exception) {

@@ -5,6 +5,7 @@ import fd.cmp.movie.data.remote.api.core.ApiResponse
 import fd.cmp.movie.data.remote.api.service.MovieApiService
 import fd.cmp.movie.data.remote.request.MovieRequest
 import fd.cmp.movie.data.remote.response.MoviesResponse
+import kotlin.math.max
 
 class MovieRepositoryImpl(private val apiService: MovieApiService) : MovieRepository {
 
@@ -25,30 +26,28 @@ class MovieRepositoryImpl(private val apiService: MovieApiService) : MovieReposi
             return ApiResponse.Success(moviesData.copy(results = moviesWithGenreNames))
         }
         if (movies is ApiResponse.Error) return movies
-        if (genres is ApiResponse.Error) return genres
         return ApiResponse.Error(500, "Unknown error occurred")
     }
 
     override suspend fun detail(id: Int?): ApiResponse<Movie> {
         val movie = apiService.detail(id)
-        val genres = apiService.genres()
-        if (movie is ApiResponse.Success && genres is ApiResponse.Success) {
+        val credits = apiService.credits(id)
+        if (movie is ApiResponse.Success && credits is ApiResponse.Success) {
             val movieData = movie.data
-            val genresData = genres.data
-            val genreIds = movieData.genreIds
-            val genreNames = genreIds?.mapNotNull { genreId ->
-                genresData.genres?.find { it.id == genreId }?.name
+            val genreNames = movieData.genres?.mapNotNull { genre ->
+                genre?.name
             }
             val formattedGenreNames = genreNames?.joinToString(", ")
+            val sortedCast = credits.data.cast?.sortedByDescending { it?.popularity }
             return ApiResponse.Success(
                 movieData.copy(
                     genreNames = genreNames,
-                    formattedGenreNames = formattedGenreNames
+                    formattedGenreNames = formattedGenreNames,
+                    cast = sortedCast,
                 )
             )
         }
         if (movie is ApiResponse.Error) return movie
-        if (genres is ApiResponse.Error) return genres
         return ApiResponse.Error(500, "Unknown error occurred")
     }
 }

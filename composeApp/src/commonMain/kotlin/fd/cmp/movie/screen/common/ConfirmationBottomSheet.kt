@@ -45,13 +45,13 @@ fun ConfirmationBottomSheet(
     confirmText: String = stringResource(Res.string.yes),
     dismissText: String = stringResource(Res.string.no),
     confirmTextColor: Color = Color.White,
-    confirmButtonColor: Color = ColorHelper.success,
-    dismissTextColor: Color = ColorHelper.error,
-    dismissButtonColor: Color = ColorHelper.error
+    confirmButtonColor: Color = MaterialTheme.colorScheme.primary,
+    dismissTextColor: Color = MaterialTheme.colorScheme.error,
+    dismissButtonColor: Color = MaterialTheme.colorScheme.error
 ) {
     ModalBottomSheet(
         onDismissRequest = { onDismissClick?.invoke() },
-        containerColor = MaterialTheme.colorScheme.background,
+        containerColor = ColorHelper.bottomSheetBackground,
     ) {
         Column(
             modifier = Modifier
@@ -75,7 +75,6 @@ fun ConfirmationBottomSheet(
                 text = title,
                 fontWeight = FontWeight.Bold,
                 style = MaterialTheme.typography.bodyLarge,
-                color = Color.Black
             )
 
             // Message
@@ -84,7 +83,6 @@ fun ConfirmationBottomSheet(
                 Text(
                     text = message,
                     style = MaterialTheme.typography.bodyMedium,
-                    color = Color.Gray
                 )
             }
 

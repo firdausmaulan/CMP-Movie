@@ -17,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import cmp_movie.composeapp.generated.resources.Res
@@ -25,6 +26,7 @@ import cmp_movie.composeapp.generated.resources.ok
 import cmp_movie.composeapp.generated.resources.success_image_description
 import cmp_movie.composeapp.generated.resources.success_message
 import cmp_movie.composeapp.generated.resources.success_sub_message
+import fd.cmp.movie.helper.ColorHelper
 import fd.cmp.movie.helper.UiHelper
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
@@ -43,7 +45,7 @@ fun SuccessBottomSheetDialog(
 ) {
     ModalBottomSheet(
         onDismissRequest = onDismissRequest,
-        containerColor = Color.White
+        containerColor = ColorHelper.bottomSheetBackground
     ) {
         Column(
             modifier = Modifier
@@ -63,17 +65,16 @@ fun SuccessBottomSheetDialog(
             // Message
             Text(
                 text = message,
+                fontWeight = FontWeight.Bold,
                 style = MaterialTheme.typography.bodyLarge,
-                textAlign = TextAlign.Center,
-                color = Color.Black
+                textAlign = TextAlign.Center
             )
             Spacer(modifier = Modifier.height(8.dp))
             // Sub-message
             Text(
                 text = subMessage,
                 style = MaterialTheme.typography.bodyMedium,
-                textAlign = TextAlign.Center,
-                color = Color.Gray
+                textAlign = TextAlign.Center
             )
             Spacer(modifier = Modifier.height(24.dp))
             // Button

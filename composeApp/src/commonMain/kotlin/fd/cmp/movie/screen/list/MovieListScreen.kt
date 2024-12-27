@@ -45,7 +45,7 @@ import org.koin.compose.viewmodel.koinViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MovieListScreen(
-    navigateToDetails: (objectId: Int?, genres: String?) -> Unit,
+    navigateToDetails: (movieId: Int?) -> Unit,
     navigateToUser: () -> Unit
 ) {
     val viewModel = koinViewModel<MovieListViewModel>()
@@ -101,10 +101,7 @@ fun MovieListScreen(
                                 movies = state.movies,
                                 onLoadMore = { viewModel.loadMovies(true) },
                                 onItemClick = { movie ->
-                                    navigateToDetails(
-                                        movie.id,
-                                        movie.formattedGenreNames
-                                    )
+                                    navigateToDetails(movie.id)
                                 }
                             )
                             PullToRefreshBox(

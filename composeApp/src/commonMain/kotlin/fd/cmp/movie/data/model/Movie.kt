@@ -15,6 +15,8 @@ data class Movie(
     val backdropPath: String? = null,
     @SerialName("backdrop_path_url")
     val backdropPathUrl: String? = Constants.IMAGE_URL + backdropPath,
+    @SerialName("genres")
+    val genres: List<Genre?>? = null,
     @SerialName("genre_ids")
     val genreIds: List<Int?>? = null,
     @SerialName("genre_names")
@@ -32,5 +34,7 @@ data class Movie(
     @SerialName("vote_average")
     val voteAverage: Double? = null,
     @SerialName("formatted_vote_average")
-    val formattedVoteAverage: String? = "${TextHelper.roundToOneDecimal(voteAverage ?: 0.0)}/10"
+    val formattedVoteAverage: String? = "${TextHelper.roundToOneDecimal(voteAverage ?: 0.0)}/10",
+    @SerialName("cast")
+    val cast: List<Cast?>? = null,
 )

@@ -14,6 +14,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -27,13 +28,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import cmp_movie.composeapp.generated.resources.Res
+import cmp_movie.composeapp.generated.resources.close_action
+import cmp_movie.composeapp.generated.resources.confirm_action
+import cmp_movie.composeapp.generated.resources.edit_location_label
 import cmp_movie.composeapp.generated.resources.ic_close
+import cmp_movie.composeapp.generated.resources.search_location_label
 import fd.cmp.movie.data.model.LocationData
+import fd.cmp.movie.helper.ColorHelper
 import fd.cmp.movie.helper.UiHelper
 import fd.cmp.movie.screen.common.DebounceTextField
 import fd.cmp.movie.screen.common.ErrorBottomSheetDialog
 import fd.cmp.movie.screen.common.MapScreen
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 
@@ -67,15 +74,10 @@ fun LocationScreen(
 
     Scaffold(topBar = {
         TopAppBar(
-            colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = Color.White,
-                titleContentColor = Color.Black,
-                navigationIconContentColor = Color.Black,
-                actionIconContentColor = Color.Black,
-            ),
+            colors = UiHelper.topAppBarColors(),
             title = {
                 Text(
-                    "Edit Location",
+                    stringResource(Res.string.edit_location_label),
                     textAlign = TextAlign.Center,
                     fontWeight = FontWeight.SemiBold
                 )
@@ -85,7 +87,7 @@ fun LocationScreen(
                     Icon(
                         painter = painterResource(Res.drawable.ic_close),
                         tint = Color.Black,
-                        contentDescription = "Close"
+                        contentDescription = stringResource(Res.string.close_action)
                     )
                 }
             }
@@ -104,7 +106,7 @@ fun LocationScreen(
 
             Column(modifier = Modifier.fillMaxSize()) {
                 Box(Modifier.padding(8.dp)) {
-                    DebounceTextField(placeholderText = "Search location") {
+                    DebounceTextField(placeholderText = stringResource(Res.string.search_location_label)) {
                         viewModel.searchLocation(it)
                     }
                 }
@@ -139,12 +141,11 @@ fun LocationScreen(
                         .fillMaxWidth()
                         .defaultMinSize(minHeight = 150.dp)
                         .align(Alignment.BottomCenter)
-                        .background(color = Color.White),
+                        .background(color = MaterialTheme.colorScheme.background),
                     verticalArrangement = Arrangement.Bottom
                 ) {
                     Text(
                         text = viewModel.address,
-                        color = Color.Black,
                         modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
                     )
                     Button(
@@ -158,7 +159,7 @@ fun LocationScreen(
                             .fillMaxWidth()
                             .padding(horizontal = 16.dp, vertical = 8.dp)
                     ) {
-                        Text(text = "CONFIRM")
+                        Text(text = stringResource(Res.string.confirm_action).uppercase())
                     }
                 }
             }

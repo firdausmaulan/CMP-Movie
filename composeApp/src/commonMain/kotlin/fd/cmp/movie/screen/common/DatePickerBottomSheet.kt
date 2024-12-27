@@ -44,6 +44,7 @@ import cmp_movie.composeapp.generated.resources.day_names_label
 import cmp_movie.composeapp.generated.resources.invalid_date_error
 import cmp_movie.composeapp.generated.resources.next_icon_description
 import cmp_movie.composeapp.generated.resources.prev_icon_description
+import fd.cmp.movie.helper.ColorHelper
 import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.Month
@@ -55,7 +56,7 @@ import org.jetbrains.compose.resources.stringResource
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BottomSheetDatePicker(
+fun DatePickerBottomSheet(
     minYear: Int = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date.year - 50,
     maxYear: Int = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date.year,
     minMonth: Int = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date.monthNumber,
@@ -107,6 +108,7 @@ fun BottomSheetDatePicker(
     ModalBottomSheet(
         onDismissRequest = onDismiss,
         sheetState = sheetState,
+        containerColor = ColorHelper.bottomSheetBackground,
         modifier = Modifier.fillMaxWidth()
     ) {
         when {
