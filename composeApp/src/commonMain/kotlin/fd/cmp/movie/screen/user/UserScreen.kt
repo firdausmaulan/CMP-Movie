@@ -39,6 +39,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import cmp_movie.composeapp.generated.resources.Res
+import cmp_movie.composeapp.generated.resources.address_label
 import cmp_movie.composeapp.generated.resources.back
 import cmp_movie.composeapp.generated.resources.date_of_birth_label
 import cmp_movie.composeapp.generated.resources.email_label
@@ -56,11 +57,12 @@ import cmp_movie.composeapp.generated.resources.settings_label
 import cmp_movie.composeapp.generated.resources.submit_action
 import fd.cmp.movie.data.model.LocationData
 import fd.cmp.movie.data.model.User
+import fd.cmp.movie.helper.ColorHelper
 import fd.cmp.movie.helper.DateHelper
 import fd.cmp.movie.helper.TextHelper
 import fd.cmp.movie.helper.UiHelper
-import fd.cmp.movie.screen.common.BottomSheetDatePicker
 import fd.cmp.movie.screen.common.ConfirmationBottomSheet
+import fd.cmp.movie.screen.common.DatePickerBottomSheet
 import fd.cmp.movie.screen.common.ErrorBottomSheetDialog
 import fd.cmp.movie.screen.common.ErrorScreen
 import fd.cmp.movie.screen.common.LoadingButton
@@ -324,7 +326,7 @@ fun UserDetailContent(
             )
         }
         if (showDatePicker) {
-            BottomSheetDatePicker(
+            DatePickerBottomSheet(
                 initialDate = DateHelper.formatDate(dateOfBirth),
                 onDateSelected = { date ->
                     dateOfBirth = DateHelper.formatDate(date)
@@ -338,7 +340,7 @@ fun UserDetailContent(
             value = viewModel.address,
             onValueChange = {},
             readOnly = true,
-            label = { Text("Address") },
+            label = { Text(stringResource(Res.string.address_label)) },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(8.dp)
@@ -403,7 +405,7 @@ fun CircleAvatar(
                 .height(120.dp)
                 .width(120.dp)
                 .padding(8.dp)
-                .border(2.dp, Color.Black, CircleShape)
+                .border(2.dp, MaterialTheme.colorScheme.primary, CircleShape)
                 .clip(CircleShape)
                 .clickable {
                     if (permissionCamera.status.isGranted) {

@@ -28,18 +28,25 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import cmp_movie.composeapp.generated.resources.Res
+import cmp_movie.composeapp.generated.resources.camera_permission_denied
+import cmp_movie.composeapp.generated.resources.camera_permission_denied_sub_message
+import cmp_movie.composeapp.generated.resources.close_action
+import cmp_movie.composeapp.generated.resources.edit_photo_label
 import cmp_movie.composeapp.generated.resources.ic_close
+import cmp_movie.composeapp.generated.resources.upload_image_success
 import com.preat.peekaboo.image.picker.SelectionMode
 import com.preat.peekaboo.image.picker.rememberImagePickerLauncher
 import com.preat.peekaboo.ui.camera.CameraMode
 import com.preat.peekaboo.ui.camera.PeekabooCamera
 import com.preat.peekaboo.ui.camera.rememberPeekabooCameraState
+import fd.cmp.movie.helper.UiHelper
 import fd.cmp.movie.screen.common.ErrorBottomSheetDialog
 import fd.cmp.movie.screen.common.ErrorScreen
 import fd.cmp.movie.screen.common.ImageOptionsBottomSheet
 import fd.cmp.movie.screen.common.LoadingBottomSheetDialog
 import fd.cmp.movie.screen.common.SuccessBottomSheetDialog
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -75,15 +82,10 @@ fun PhotoScreen(
 
     Scaffold(topBar = {
         TopAppBar(
-            colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = Color.White,
-                titleContentColor = Color.Black,
-                navigationIconContentColor = Color.Black,
-                actionIconContentColor = Color.Black,
-            ),
+            colors = UiHelper.topAppBarColors(),
             title = {
                 Text(
-                    "Edit Photo",
+                    stringResource(Res.string.edit_photo_label),
                     textAlign = TextAlign.Center,
                     fontWeight = FontWeight.SemiBold
                 )
@@ -93,7 +95,7 @@ fun PhotoScreen(
                     Icon(
                         painter = painterResource(Res.drawable.ic_close),
                         tint = Color.Black,
-                        contentDescription = "Close"
+                        contentDescription = stringResource(Res.string.close_action)
                     )
                 }
             }
@@ -124,8 +126,8 @@ fun PhotoScreen(
                         modifier = Modifier.fillMaxSize(),
                         permissionDeniedContent = {
                             ErrorScreen(
-                                message = "Camera permission denied",
-                                subMessage = "Please grant the camera permission to use the camera"
+                                message = stringResource(Res.string.camera_permission_denied),
+                                subMessage = stringResource(Res.string.camera_permission_denied_sub_message),
                             )
                         },
                     )
@@ -155,7 +157,7 @@ fun PhotoScreen(
             is PhotoState.Idle -> {}
             is PhotoState.Success -> {
                 SuccessBottomSheetDialog(
-                    subMessage = "Image uploaded successfully",
+                    subMessage = stringResource(Res.string.upload_image_success),
                     onDismissRequest = { viewModel.state = PhotoState.Idle },
                     onButtonClick = {
                         viewModel.state = PhotoState.Idle

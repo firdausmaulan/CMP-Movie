@@ -4,9 +4,21 @@ import androidx.compose.ui.graphics.Color
 
 object ColorHelper {
 
-    val success = Color(0xFF4CAF50)
-    val error = Color(0xFFF44336)
-    val warning = Color(0xFFFFC107)
-    val info = Color(0xFF2196F3)
+    val primary = Color(0xFFDEAE04)
+    val secondary = Color(0xFFDEAE04)
+    val tertiary = Color(0xFFFFFFFF)
 
+    val onPrimary = Color(0xFFFFFFFF)
+    val onSecondary = Color(0xFFFFFFFF)
+    val onTertiary = Color(0xFF000000)
+
+    val background = Color(0xFF000435)
+    val onBackground = Color(0xFFCED0E8)
+    val surface = Color(0xFFFFFFFF)
+    val onSurface = Color(0xFF000000)
+
+    val error = Color(0xFFB00020)
+    val onError = Color(0xFFFFFFFF)
+
+    val bottomSheetBackground = Color(0xFFFFFFFF)
 }

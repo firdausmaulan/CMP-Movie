@@ -52,16 +52,26 @@
     <string name="name_label">Name</string>
     <string name="phone_number_label">Phone Number</string>
     <string name="date_of_birth_label">Date of Birth</string>
+    <string name="address_label">Address</string>
     <string name="release_date_label">Release Date</string>
     <string name="rating_label">Rating</string>
     <string name="genre_label">Genre</string>
+    <string name="edit_location_label">Edit Location</string>
+    <string name="location_label">My Location</string>
+    <string name="search_location_label">Search Location</string>
+    <string name="edit_photo_label">Edit Photo</string>
+    <string name="camera_label">Camera</string>
+    <string name="gallery_label">Gallery</string>
 
-    <!-- Error -->
+    <!-- Error Message -->
     <string name="email_error">Invalid email format</string>
     <string name="password_error">Password must be at least 8 characters</string>
     <string name="name_error">Name is required</string>
     <string name="phone_number_error">Please input a valid phone number</string>
     <string name="invalid_date_error">Please select a valid date</string>
+
+    <!-- Success Message -->
+    <string name="upload_image_success">Image uploaded successfully</string>
 
     <!-- Action -->
     <string name="login_action">Login</string>
@@ -72,4 +82,9 @@
     <string name="confirm_action">Confirm</string>
     <string name="save_action">Save</string>
     <string name="delete_action">Delete</string>
+    <string name="close_action">Close</string>
+
+    <!-- Permissions -->
+    <string name="camera_permission_denied">Camera permission denied</string>
+    <string name="camera_permission_denied_sub_message">Please grant the camera permission to use the camera</string>
 </resources>

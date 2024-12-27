@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -31,7 +32,7 @@ fun MovieItem(item: Movie, onItemClick: (movie: Movie) -> Unit) {
     Card(
         modifier = Modifier.fillMaxWidth().padding(8.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primary),
         onClick = { onItemClick(item) },
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
@@ -62,8 +63,8 @@ fun MovieItem(item: Movie, onItemClick: (movie: Movie) -> Unit) {
             Text(
                 text = item.title.toString(),
                 modifier = Modifier.fillMaxWidth().padding(8.dp),
-                color = Color.Black,
-                fontWeight = FontWeight.SemiBold,
+                color = MaterialTheme.colorScheme.background,
+                fontWeight = FontWeight.W500,
                 fontSize = 16.sp
             )
         }

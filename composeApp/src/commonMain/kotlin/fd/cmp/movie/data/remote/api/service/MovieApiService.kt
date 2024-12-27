@@ -26,4 +26,7 @@ class MovieApiService(private val appHttpClient: AppHttpClient) {
         return appHttpClient.get(endpoint = "movie/$id")
     }
 
+    suspend fun credits(id: Int?): ApiResponse<Movie> {
+        return appHttpClient.get(endpoint = "movie/$id/credits")
+    }
 }
