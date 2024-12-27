@@ -1,7 +1,5 @@
 # Movie Compose Multiplatform (Android & iOS)
 
-Movie Compose Multiplatform is a modern and efficient mobile application designed for both Android and iOS platforms using Kotlin Multiplatform. This app showcases the implementation of best practices in development, using cutting-edge tools and libraries.
-
 ---
 
 ## 🚀 Tech Stack
