@@ -59,15 +59,15 @@ Movie Compose Multiplatform is a modern and efficient mobile application designe
 ## 📸 Screenshots
 
 <div align="center">
-  <img src="https://raw.githubusercontent.com/firdausmaulan/CMP-Movie/refs/heads/master/screenshoot/login.jpeg" width="300">
-  <img src="https://raw.githubusercontent.com/firdausmaulan/CMP-Movie/refs/heads/master/screenshoot/movies.jpeg" width="300">
-  <img src="https://raw.githubusercontent.com/firdausmaulan/CMP-Movie/refs/heads/master/screenshoot/movie-detail.jpeg" width="300">
+  <img src="https://raw.githubusercontent.com/firdausmaulan/CMP-Movie/refs/heads/master/screenshoot/login.jpeg" width="250">
+  <img src="https://raw.githubusercontent.com/firdausmaulan/CMP-Movie/refs/heads/master/screenshoot/movies.jpeg" width="250">
+  <img src="https://raw.githubusercontent.com/firdausmaulan/CMP-Movie/refs/heads/master/screenshoot/movie-detail.jpeg" width="250">
 </div>
 
 <div align="center">
-  <img src="https://raw.githubusercontent.com/firdausmaulan/CMP-Movie/refs/heads/master/screenshoot/user.jpeg" width="300">
-  <img src="https://raw.githubusercontent.com/firdausmaulan/CMP-Movie/refs/heads/master/screenshoot/date-picker.jpeg" width="300">
-  <img src="https://raw.githubusercontent.com/firdausmaulan/CMP-Movie/refs/heads/master/screenshoot/location.jpeg" width="300">
+  <img src="https://raw.githubusercontent.com/firdausmaulan/CMP-Movie/refs/heads/master/screenshoot/user.jpeg" width="250">
+  <img src="https://raw.githubusercontent.com/firdausmaulan/CMP-Movie/refs/heads/master/screenshoot/date-picker.jpeg" width="250">
+  <img src="https://raw.githubusercontent.com/firdausmaulan/CMP-Movie/refs/heads/master/screenshoot/location.jpeg" width="250">
 </div>
 
 ---
